@@ -4,9 +4,19 @@ const Schema = mongoose.Schema;
 
 const cravingSchema = new Schema(
     {
-        name: {
-            type: String,
-            required: true
+        owner_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            count {
+                type: Number,
+                required: true
+            }
         }
     }
 );

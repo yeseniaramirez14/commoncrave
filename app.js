@@ -1,42 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { graphqlHTTP } = require("express-graphql");
-const graphQlSchema = require("./graphql/schema/index");
-const graphQlResolvers = require("./graphql/resolvers/index");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const routes = require('./routes/routes')
+const craving_router = require('./routes/cravings')
 dotenv.config()
 
 const app = express();
 
 app.use(bodyParser.json());
-
-// app.get('/', (req, res, next) => {
-//     res.send('Hello World!');
-// })
-
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: graphQlSchema,
-    // object that has all the resolver functions in it and the resolver functions need to match our schema endpoints by name
-    rootValue: graphQlResolvers,
-    graphiql: true,
-  })
-);
+app.use('/api', routes)
+app.use('/apii', craving_router)
 
 
-
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@commoncrave.yzy4afb.mongodb.net/?retryWrites=true&w=majority`;
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
-
-
+const Craving = require('./collections/craving');
 
 mongoose.set("strictQuery", false);
 
@@ -46,8 +23,21 @@ mongoose
   )
   .then(() => {
     app.listen(9000, () => {
-      console.log("GraphQL server running at http://localhost:9000");
+      console.log("Server running at http://localhost:9000");
     });
+
+    // console.log("Hello")
+    // Craving.insertMany([
+    //     {name: "Mexican"},
+    //     {name: "Italian"},
+    //     {name: "Japanese"},
+    //     {name: "Chinese"}
+    // ]).then(function() {
+    //     console.log("Cravings inserted")
+    // }).catch(function(error) {
+    //     throw error
+    // });
+
   })
   .catch((err) => {
     console.log(err);

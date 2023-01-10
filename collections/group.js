@@ -8,14 +8,18 @@ const groupSchema = new Schema(
             type: String,
             required: true
         },
-        members: {
+        owner_id: {
+            type: String,
+            required: true
+        },
+        members: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
-        },
-        cravings: {
+        }],
+        cravings: [{
             type: Schema.Types.ObjectId,
             ref: 'Craving'
-        }
+        }]
     }
 );
 
