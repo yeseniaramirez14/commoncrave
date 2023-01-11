@@ -4,6 +4,7 @@ const router = express.Router();
 
 const User = require('../collections/user');
 const Group = require('../collections/group');
+const { ObjectId } = require('mongodb');
 
 // Create User (POST)
 router.post('/user', async (req, res) => {
@@ -42,6 +43,16 @@ router.post('/group', async (req, res) => {
         res.status(400).json({message: error.message})
     }
 })
+// Get all groups
+router.get('/group', async (req, res) => {
+    try{
+        const groups = await Group.find()
+        res.status(200).json({groups: groups})
+        return groups
+    } catch(error){
+        res.status(400).jason({message: error.message})
+    }
+})
 
 // Get Group by ID (GET)
 router.get('/group/:id', async (req, res) => {
@@ -72,8 +83,15 @@ router.patch('/group/:id', async (req, res) => {
 })
 
 // Delete Group by ID (DEL)
-router.delete('/delete/:id', (req, res) => {
-    res.send('Delete by ID API')
+router.delete('/group/:id', async (req, res) => {
+    try {
+        await Group.deleteOne(
+            {"_id": ObjectId(`${req.params.id}`)}
+        )
+        res.status(200).json({message: 'successfully deleted'})
+    } catch(error) {
+        res.status(400).json({message:error.message})
+    }
 })
 
 // router.post('/cravings', async (req, res) => {
