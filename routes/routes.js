@@ -44,13 +44,31 @@ router.post('/group', async (req, res) => {
 })
 
 // Get Group by ID (GET)
-router.get('/getOne/:id', (req, res) => {
-    res.send('Get by ID API')
+router.get('/group/:id', async (req, res) => {
+    try {
+        const group = await Group.findById(req.params.id).exec();
+        res.status(200).json({group: group})
+        return group
+    } catch(error) {
+        res.status(400).json({message: error.message})
+    }
 })
 
 // Update Group by ID (PUT)
-router.patch('/update/:id', (req, res) => {
-    res.send('Update by ID API')
+router.patch('/group/:id', async (req, res) => {
+    try {
+        const group = await Group.findByIdAndUpdate(
+            {_id: req.params.id},
+            { $push:   {
+                members: req.body.members
+            }},
+            {returnDocument: "after", runValidators: true}
+        )
+        res.status(200).json({group: group})
+        return group
+    } catch(error) {
+        res.status(400).json({message: error.message})
+    }
 })
 
 // Delete Group by ID (DEL)
@@ -73,7 +91,5 @@ router.delete('/delete/:id', (req, res) => {
 //         res.status(400).json({message: error.message})
 //     }
 // })
-
-
 
 module.exports = router;
