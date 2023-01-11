@@ -23,6 +23,17 @@ router.post('/user', async (req, res) => {
     }
 })
 
+// Get all Users
+router.get('/user', async (req, res) => {
+    try{
+        const users = await User.find()
+        res.status(200).json({users: users})
+        return users
+    } catch(error){
+        res.status(400).jason({message: error.message})
+    }
+})
+
 // Create Group (POST)
 router.post('/group', async (req, res) => {
     const user = await User.findById(req.body.owner_id).exec();
@@ -86,6 +97,18 @@ router.patch('/group/:id', async (req, res) => {
 router.delete('/group/:id', async (req, res) => {
     try {
         await Group.deleteOne(
+            {"_id": ObjectId(`${req.params.id}`)}
+        )
+        res.status(200).json({message: 'successfully deleted'})
+    } catch(error) {
+        res.status(400).json({message:error.message})
+    }
+})
+
+// Delete User by ID (DEL)
+router.delete('/user/:id', async (req, res) => {
+    try {
+        await User.deleteOne(
             {"_id": ObjectId(`${req.params.id}`)}
         )
         res.status(200).json({message: 'successfully deleted'})
