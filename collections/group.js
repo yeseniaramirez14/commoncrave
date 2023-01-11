@@ -15,10 +15,6 @@ const groupSchema = new Schema(
         members: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
-        }],
-        cravings: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Craving'
         }]
     }
 );
