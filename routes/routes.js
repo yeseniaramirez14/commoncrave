@@ -4,7 +4,6 @@ const router = express.Router();
 
 const User = require('../collections/user');
 const Group = require('../collections/group');
-const { ObjectId } = require('mongodb');
 
 // Create User (POST)
 router.post('/user', async (req, res) => {
@@ -116,21 +115,5 @@ router.delete('/user/:id', async (req, res) => {
         res.status(400).json({message:error.message})
     }
 })
-
-// router.post('/cravings', async (req, res) => {
-//     try {
-//         console.log("inside and about to start")
-//         const cravings = await Craving.insertMany( [
-//             {name: "Mexican"},
-//             {name: "Italian"},
-//             {name: "Japanese"},
-//             {name: "Chinese"}
-//         ]);
-//         console.log("done")
-//         return cravings
-//     } catch(error) {
-//         res.status(400).json({message: error.message})
-//     }
-// })
 
 module.exports = router;
