@@ -8,7 +8,11 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
-        zipcode: {
+        lat: {
+            type: Number,
+            required: true
+        },
+        lon: {
             type: Number,
             required: true
         },

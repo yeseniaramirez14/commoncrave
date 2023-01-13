@@ -4,16 +4,20 @@ const router = express.Router();
 
 const User = require('../collections/user');
 const Group = require('../collections/group');
+const {getLatLongFromAddress} = require('../external-apis/geocoder');
 
 // Create User (POST)
 router.post('/user', async (req, res) => {
-    const data = new User({
-        name: req.body.name,
-        zipcode: req.body.zipcode,
-        cravings: req.body.cravings
-    })
+    try {
+        const [lat, lon] = await getLatLongFromAddress(req.body.address)
+    
+        const data = new User({
+            name: req.body.name,
+            lat: lat,
+            lon: lon,
+            cravings: req.body.cravings
+        })
 
-    try{
         const dataToSave = await data.save();
         res.status(200).json(dataToSave)
     }
