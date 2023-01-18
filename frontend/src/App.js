@@ -1,10 +1,11 @@
-import './App.css';
+import Nav from './Components/Nav';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>HELLO</h1>
-    </div>
+    <>
+    <Nav />
+    </>
+    
   );
 }
 
