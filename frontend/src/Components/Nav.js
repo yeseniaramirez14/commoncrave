@@ -1,4 +1,4 @@
-import logo from "../images/logo.jpeg";
+// import logo from "../images/logo.jpeg";
 
 const Nav = () => {
     return (
