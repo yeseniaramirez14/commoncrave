@@ -1,12 +1,13 @@
 import Nav from './Components/Nav';
-import Home from './Components/Home'
+import Home from './Pages/Home'
 
 const App = () => {
   return (
-    <div className="font-worksans bg-yellow ">
+    <>
       <Nav />
       <Home />
-    </div>
+    </>
+    
   );
 }
 
