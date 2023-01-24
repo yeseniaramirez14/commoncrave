@@ -1,11 +1,12 @@
 import Nav from './Components/Nav';
+import Home from './Components/Home'
 
 const App = () => {
   return (
-    <>
-    <Nav />
-    </>
-    
+    <div className="font-worksans bg-yellow ">
+      <Nav />
+      <Home />
+    </div>
   );
 }
 
