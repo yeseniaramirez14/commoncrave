@@ -14,7 +14,9 @@ module.exports = {
       "light-pink": "#FFE0D8",
       "pink": "#FF9B93",
       "green": "#41584B",
-      "white": "#FFFFFF"
+      "white": "#FFFFFF",
+      "black": "#000000",
+      "dark-pink": "#FF5562",
     }
   },
   plugins: [],
