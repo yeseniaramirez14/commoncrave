@@ -1,6 +1,9 @@
 import andrew from '../images/andrew.jpg';
 import yesenia from '../images/yesenia.jpg';
-import github from '../images/github.svg';
+import Github from '../images/icons/Github.png';
+import Discord from '../images/icons/Discord.png'
+import LinkedIn from '../images/icons/LinkedIn.png'
+import Portfolio from '../images/icons/Portfolio.png'
 
 const AboutUs = () => {
     return (
@@ -11,22 +14,42 @@ const AboutUs = () => {
                 <p className="text-center pt-2"> Powder biscuit soufflé chocolate cake chocolate chupa chups gummies powder. Toffee muffin tart sesame snaps gingerbread candy canes cheesecake. Cheesecake soufflé pudding jelly tart.</p>
             </div>
             <div className="grid grid-cols-2 p-5 m-10">
-                <div className="grid-col-1">
+                <div className="grid-col-1 text-center text-2xl">
                     Andrew
-                    <div>
-                        <img className='rounded-full w-1/3' src={andrew} alt="andrew"></img>
+                    <div className='pb-[3px] pt-10'>
+                        <img className='rounded-full w-1/3 m-auto' src={andrew} alt="andrew"></img>
                     </div>
-                    <div className="border-solid rounded-2xl p-5 border-green border-2">
-                    <button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="bg-green inline-block px-6 py-2.5 mb-2 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out">
-                        <img className="w-5" src={github} alt="github icon"/>
-                    </button>
+                    <div className="flex justify-evenly p-5">
+                        <button type="button">
+                            <img className="w-10" src={Github} alt="github icon"/>
+                        </button>
+                        <button type="button">
+                            <img className="w-10" src={LinkedIn} alt="linkedin icon"/>
+                        </button>
+                        <button type="button">
+                            <img className="w-10" src={Discord} alt="discord icon"/>
+                        </button>
+                        <button type="button">
+                            <img className="w-9" src={Portfolio} alt="portfolio icon"/>
+                        </button>
                     </div>
                 </div>
                 <div className="h-1/2 absolute left-1/2 -ml-0.5 w-0.5 bg-green"></div>
-                <div className="grid-col-2">
+                <div className="grid-col-2 text-center text-2xl">
                     Yesenia
-                    <div>
-                        <img className='rounded-full w-1/3' src={yesenia} alt="yesenia"></img>
+                    <div className='pt-10'>
+                        <img className='rounded-full w-1/3 m-auto' src={yesenia} alt="yesenia"></img>
+                    </div>
+                    <div className="flex justify-evenly p-5">
+                        <button type="button">
+                            <img className="w-10" src={Github} alt="github icon"/>
+                        </button>
+                        <button type="button">
+                            <img className="w-10" src={LinkedIn} alt="linkedin icon"/>
+                        </button>
+                        <button type="button">
+                            <img className="w-9" src={Portfolio} alt="portfolio icon"/>
+                        </button>
                     </div>
                 </div>
             </div>
