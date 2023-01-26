@@ -46,7 +46,7 @@ const GroupForm = () => {
                         </label>
                     </div>
                     <div>
-                        <p id="location" onclick={getLocation()}>Locate Me</p>
+                        <p id="location" onClick={getLocation()}>Locate Me</p>
                     </div>
                 </div>
                 <div className="flex justify-center flex-wrap -mx-3 mb-6">
