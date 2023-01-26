@@ -1,4 +1,22 @@
+import Modal from "./Modal";
+import { useState } from "react";
+
 const GroupForm = () => {
+    const [openModal, setOpenModal] = useState(false)
+
+    let x = document.getElementById("location")
+    function getLocation() {
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Unable to find location"
+        }
+    }
+    function showPosition(position) {
+        x.innerHTML = "Latitude " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+    }
+
 
     return (
         <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
@@ -27,16 +45,21 @@ const GroupForm = () => {
                             <input name="address" id="address" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Address" />
                         </label>
                     </div>
+                    <div>
+                        <p id="location" onclick={getLocation()}>Locate Me</p>
+                    </div>
                 </div>
                 <div className="flex justify-center flex-wrap -mx-3 mb-6">
                     <div className="w-half px-3">
                         <label htmlFor="cravings">
                             Cravings
+                            <button type="button" onClick={() => setOpenModal(true)}>Select Cravings</button>
+                            <Modal open={openModal} onClose={() => setOpenModal(false)}/>
                         </label>
                     </div>
                 </div>
                 <div className="flex justify-center">
-                    <button className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Submit</button>
+                    <button type="submit" className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Submit</button>
                 </div>
             </form>
         </div>
