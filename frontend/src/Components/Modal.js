@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { createPortal }  from 'react-dom'
 import CravingsCheckBox from "./CravingsCheckBox";
+// import get_alias_from_restaurant from '../External-Apis/yelp-api';
 
 
 const Modal = ({open, onClose}) => {
+    // const [restaurant, setRestaurant] = useState("")
+    // const [alias, setAlias] = useState("")
+
+    // async function getAliasFromRestaurant(restaurant) {
+    //     const output = get_alias_from_restaurant(restaurant)
+    //     setAlias(output)
+    //     console.log("aliassssss", alias)
+    // }
+
+
+
     // const modalRef = useRef();
 
     // const closeModal = (e) => {
@@ -45,10 +57,16 @@ const Modal = ({open, onClose}) => {
                             <p className="text-black text-md leading-relaxed">
                                 I'm craving a specific restaurant's type of food 
                             </p>
-                            <input className="appearance-none block w-full bg-white text-black border border-green rounded p-2 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder='Restaurant name'></input>
+                            <input 
+                                className="appearance-none block w-full bg-white text-black border border-green rounded p-2 mb-3 leading-tight focus:outline-none focus:bg-white" 
+                                type="text" 
+                                placeholder='Restaurant name' 
+                                // onChange={(e) => {setRestaurant(e.target.value)}}
+                            />
                             <button
                                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm p-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
+                                // onClick={() => getAliasFromRestaurant(restaurant)} 
                             >
                                 Search
                             </button>
