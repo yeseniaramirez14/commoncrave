@@ -1,5 +1,7 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { createPortal }  from 'react-dom'
+import CravingsCheckBox from "./CravingsCheckBox";
+
 
 const Modal = ({open, onClose}) => {
     // const modalRef = useRef();
@@ -20,7 +22,7 @@ const Modal = ({open, onClose}) => {
                 <div className="relative w-auto my-6 mx-auto max-w-3xl">
                     <div className='border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none'>
                         {/*header*/}
-                        <div className='flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t'>
+                        <div className='flex items-start justify-between p-5'>
                                 
                             <h3 className='text-3xl font-semibold'> What are you craving? </h3>
                             <button
@@ -34,28 +36,27 @@ const Modal = ({open, onClose}) => {
                         </div>
                 
                         {/*body*/}
-                        <div className="relative p-6 flex-auto">
-                        <p className="my-4 text-black text-lg leading-relaxed">
-                            This is where our cravings list will be 
-                        </p>
+                        <div className="relative px-6 flex-auto">
+                            <CravingsCheckBox />
                         </div>
 
                         {/*fetch cravings*/}
-                        <div className="relative p-6 flex-auto">
-                        <p className="my-4 text-black text-lg leading-relaxed">
-                            I'm craving a specific restaurant's type of food 
-                        </p>
-                        <input className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder='Restaurant name'></input>
-                        <button
-                                className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        <div className="relative p-6 pt-4 flex-auto">
+                            <p className="text-black text-md leading-relaxed">
+                                I'm craving a specific restaurant's type of food 
+                            </p>
+                            <input className="appearance-none block w-full bg-white text-black border border-green rounded p-2 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder='Restaurant name'></input>
+                            <button
+                                className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm p-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                             >
                                 Search
                             </button>
+                            {/* <p>Restaurant: {restaurant}</p> */}
                         </div>
                     
                         {/*footer*/}
-                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <div className="flex items-center justify-end p-6 pt-0">
                             <button
                                 className="text-red bg-pink  active:bg-dark-pink font-bold uppercase px-6 py-3 rounded shadow text-sm outline-none hover:shadow-lg focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
@@ -79,4 +80,4 @@ const Modal = ({open, onClose}) => {
     )
 }
 
-export default Modal
+export default Modal;
