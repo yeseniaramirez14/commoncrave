@@ -1,5 +1,5 @@
-import Modal from "./Modal";
 import { useState } from "react";
+import Modal from "./Modal";
 
 const GroupForm = () => {
     const [openModal, setOpenModal] = useState(false)
