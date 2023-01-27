@@ -66,7 +66,7 @@ const Modal = ({open, onClose}) => {
                             <button
                                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm p-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
-                                // onClick={() => getAliasFromRestaurant(restaurant)}
+                                // onClick={() => getAliasFromRestaurant(restaurant)} 
                             >
                                 Search
                             </button>
