@@ -1,17 +1,15 @@
-import { useState } from "react";
-const Home = () => {
-  const [newGroup, setNewGroup] = useState(false)
-  const [joinGroup, setJoinGroup] = useState(false)
+import { useNavigate } from 'react-router-dom';
 
+const Home = () => {
+  const navigate = useNavigate();
+  
   // need to add link to form while passing in newGroup or joinGroup variables so that form can change based on values passed in
   function clickNewGroup(){
-    setNewGroup(true)
-    setJoinGroup(false)
+    navigate('/group', {state:{isNewGroup: true}});
   }
 
   function clickJoinGroup(){
-    setNewGroup(false)
-    setJoinGroup(true)
+    navigate('/group', {state:{isNewGroup: false}});
   }
 
   return (
