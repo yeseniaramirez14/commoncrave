@@ -12,10 +12,6 @@ const GroupForm = () => {
     const [status, setStatus] = useState(null);
 
 
-    // install dotenv webpack 
-    // npm install dotenv-webpack --save-dev
-
-
     const getLocation = async () => {
         if (!navigator.geolocation) {
             setStatus('Geolocation is not supported by your browser');
@@ -25,22 +21,26 @@ const GroupForm = () => {
                 setStatus(null);
                 setLat(position.coords.latitude);
                 setLng(position.coords.longitude);
-                setIsLocated(true);
+                setIsLocated(true)
             }
             , () => {
                 setStatus("Unable to retrieve your location");
             }) 
-            if (isLocated) {
-                const res = await fetch(
-                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.GOOGLE_MAPS_API_KEY}`
-                );
-                if (!res.ok) {
-                    throw new Error('Location fetch was not okay')
-                }
-                console.log("RESSSS HEREEEE", res.json())
-                return res.json();
-            }
+            getCityFromLatLon()
+            
+            console.log("here2", state.address)
         }
+    }
+
+    async function getCityFromLatLon() {
+        let res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=premise&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+        if (!res.ok) {
+            throw new Error('Location fetch was not okay')
+        }
+        let data = await res.json()
+        state.address = data.results[0].formatted_address
+        console.log("here", state.address)
+        
     }
 
 
@@ -73,9 +73,13 @@ const GroupForm = () => {
                     <div className="w-half px-3">
                         <label className="block tracking-wide text-black font-bold" htmlFor="address">
                             Address
-                            <input name="address" id="address" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Address" />
+                            <input name="address" id="address" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Address"/>
                         </label>
+                        {/* {isLocated ? <button type="button" className="mb-6 invisible" id="location">
+                            Locate Me
+                            </button> : <button type="button" className="mb-6 hover:text-pink" id="location" onClick={getLocation}>Locate Me</button>} */}
                         <button type="button" className="mb-6 hover:text-pink" id="location" onClick={getLocation}>Locate Me</button>
+                        
                         {/* <p>{status}</p>
                         {lat && <p>Latitude: {lat}</p>}
                         {lng && <p>Longitude: {lng}</p>} */}
