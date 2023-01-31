@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import cravingsData from '../cravingsData.json';
 
-const CravingsCheckBox = () => {
+const CravingsCheckBox = ({setCheckedCravings}) => {
     const [selected, setSelected] = useState([]);
 
     const handleCheckboxChange = (e) => {
@@ -13,7 +13,13 @@ const CravingsCheckBox = () => {
         }
     };
 
+    useEffect(() => {
+        setCheckedCravings(selected)
+    }, [selected]);
+
+
     return (
+        <>
         <div className='grid grid-cols-3 overflow-y-scroll h-40 border rounded border-black p-2'>
                 {Object.entries(cravingsData).map(([alias, craving]) => (
                     <div key={alias} className="form-check form-check-inline">
@@ -22,6 +28,7 @@ const CravingsCheckBox = () => {
                     </div>
                 ))}
         </div>
+        </>
     )
 };
 
