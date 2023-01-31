@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { useLocation } from 'react-router-dom';
 
 
 const GroupForm = () => {
     const {state} = useLocation();
+    // const [isNewGrouppp, setIsNewGrouppp] = useState(null)
     const [openModal, setOpenModal] = useState(false)
     const [isLocated, setIsLocated] = useState(false)
+    const [address, setAddress] = useState("")
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
     const [status, setStatus] = useState(null);
+    const [groupName, setGroupName] = useState("");
+    const [groupId, setGroupId] = useState("");
+    const [name, setName] = useState("");
+    const [cravings, setCravings] = useState([]);
 
 
     const getLocation = async () => {
@@ -24,24 +30,34 @@ const GroupForm = () => {
                 setIsLocated(true)
             }
             , () => {
-                setStatus("Unable to retrieve your location");
+                setStatus("Please allow the use of location services.");
             }) 
-            getCityFromLatLon()
-            
-            console.log("here2", state.address)
+            console.log("status", status)
         }
     }
 
-    async function getCityFromLatLon() {
-        let res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=premise&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
-        if (!res.ok) {
-            throw new Error('Location fetch was not okay')
+    useEffect(() => {
+        if (lat) {
+            getCityFromLatLon()
         }
-        let data = await res.json()
-        state.address = data.results[0].formatted_address
-        console.log("here", state.address)
-        
-    }
+
+        async function getCityFromLatLon() {
+            let res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=postal_code&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+            if (!res.ok) {
+                throw new Error('Location fetch was not okay')
+            }
+            let data = await res.json()
+            setAddress(data.results[0].formatted_address)
+        }
+    }, [lat,lng]);
+
+    const checkedCravings = cravings.length 
+        ? cravings.reduce((total, item) => {
+            return total + ", " + item;
+        })
+        : "";
+
+
 
 
     return (
@@ -54,10 +70,10 @@ const GroupForm = () => {
                     <div className="w-half px-3">
                         {state.isNewGroup ? <label className="block tracking-wide text-black font-bold mb-2" htmlFor="groupName">
                             Group Name
-                            <input name="groupName" id="groupName" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Group Name" />
+                            <input name="groupName" id="groupName" value={groupName} onChange={(e) => {setGroupName(e.target.value)}} className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Group Name" />
                         </label> : <label className="block tracking-wide text-black font-bold mb-2" htmlFor="groupId">
                             Group ID
-                            <input name="groupId" id="groupId" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Group ID" />
+                            <input name="groupId" id="groupId" value={groupId} onChange={(e) => {setGroupId(e.target.value)}} className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Group ID" />
                         </label>}
                     </div>
                 </div>
@@ -65,7 +81,7 @@ const GroupForm = () => {
                     <div className="w-half px-3">
                         <label className="block tracking-wide text-black font-bold mb-2" htmlFor="name">
                             Name
-                            <input name="name" id="name" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Name" />
+                            <input name="name" id="name" value={name} onChange={(e) => {setName(e.target.value)}}  className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Name" />
                         </label>
                     </div>
                 </div>
@@ -73,25 +89,18 @@ const GroupForm = () => {
                     <div className="w-half px-3">
                         <label className="block tracking-wide text-black font-bold" htmlFor="address">
                             Address
-                            <input name="address" id="address" className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Address"/>
+                        {isLocated ? 
+                            <input name="address" id="address" disabled value={address} onChange={(e) => {setAddress(e.target.value)}} className="appearance-none block w-full bg-white text-black border border-green rounded py-3 mb-12 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Address"/>
+                            : <><input name="address" id="address" value={address} onChange={(e) => {setAddress(e.target.value)}} className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Address"/> <button type="button" className="mb-6 hover:text-pink" id="location" onClick={getLocation}>Locate Me</button> </>}
                         </label>
-                        {/* {isLocated ? <button type="button" className="mb-6 invisible" id="location">
-                            Locate Me
-                            </button> : <button type="button" className="mb-6 hover:text-pink" id="location" onClick={getLocation}>Locate Me</button>} */}
-                        <button type="button" className="mb-6 hover:text-pink" id="location" onClick={getLocation}>Locate Me</button>
-                        
-                        {/* <p>{status}</p>
-                        {lat && <p>Latitude: {lat}</p>}
-                        {lng && <p>Longitude: {lng}</p>} */}
                     </div>
                 </div>
                 <div className="flex justify-center flex-wrap -mx-3 mb-6">
                     <div className="w-half px-3">
-                        <label htmlFor="cravings">
-                            Cravings
-                            <button type="button" onClick={() => setOpenModal(true)}>Select Cravings</button>
-                            <Modal open={openModal} onClose={() => setOpenModal(false)}/>
-                        </label>
+                        <label htmlFor="cravings" className="max-w-sm">
+                            Cravings: {checkedCravings} <br></br> </label>
+                        <button type="button" onClick={() => setOpenModal(true)} className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded">Select Cravings</button>
+                        <Modal open={openModal} onClose={() => setOpenModal(false)} setCravings={setCravings} />
                     </div>
                 </div>
                 <div className="flex justify-center">
