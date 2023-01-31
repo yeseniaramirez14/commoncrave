@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import { React, useState } from 'react'
 import { createPortal }  from 'react-dom'
 import CravingsCheckBox from "./CravingsCheckBox";
 // import get_alias_from_restaurant from '../External-Apis/yelp-api';
 
 
-const Modal = ({open, onClose}) => {
-    // const [restaurant, setRestaurant] = useState("")
+const Modal = ({open, onClose, setCravings}) => {
+    const [restaurant, setRestaurant] = useState("")
+    const [checkedCravings, setCheckedCravings] = useState([])
     // const [alias, setAlias] = useState("")
 
     // async function getAliasFromRestaurant(restaurant) {
@@ -26,6 +27,11 @@ const Modal = ({open, onClose}) => {
     //         console.log("INSIDE LIMITS")
     //     }
     // }
+
+    const saveChangesOnClick = () => {
+        setCravings(checkedCravings)
+        onClose()
+    }
 
     if(!open) return null
     return createPortal(
@@ -49,7 +55,7 @@ const Modal = ({open, onClose}) => {
                 
                         {/*body*/}
                         <div className="relative px-6 flex-auto">
-                            <CravingsCheckBox />
+                            <CravingsCheckBox setCheckedCravings={setCheckedCravings} />
                         </div>
 
                         {/*fetch cravings*/}
@@ -60,8 +66,9 @@ const Modal = ({open, onClose}) => {
                             <input 
                                 className="appearance-none block w-full bg-white text-black border border-green rounded p-2 mb-3 leading-tight focus:outline-none focus:bg-white" 
                                 type="text" 
+                                value={restaurant}
                                 placeholder='Restaurant name' 
-                                // onChange={(e) => {setRestaurant(e.target.value)}}
+                                onChange={(e) => {setRestaurant(e.target.value)}}
                             />
                             <button
                                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm p-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -85,6 +92,7 @@ const Modal = ({open, onClose}) => {
                             <button
                                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
+                                onClick={saveChangesOnClick}
                             >
                                 Save Changes
                             </button>
