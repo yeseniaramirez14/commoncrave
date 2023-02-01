@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Nav from './Components/Nav';
-import Home from './Pages/Home';
-import GroupForm from './Components/GroupForm';
-import AboutUs from './Pages/AboutUs';
+import Nav from "./Components/Nav";
+import Home from "./Pages/Home";
+import GroupForm from "./Components/GroupForm";
+import AboutUs from "./Pages/AboutUs";
 import CravingsCheckBox from "./Components/CravingsCheckBox";
 
 const App = () => {
@@ -17,6 +17,6 @@ const App = () => {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
