@@ -2,14 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const routes = require('./routes/routes')
-dotenv.config()
+const routes = require("./routes/routes");
+dotenv.config();
 
 const app = express();
 
 app.use(bodyParser.json());
-app.use('/api', routes)
-
+app.use("/api", routes);
 
 mongoose.set("strictQuery", false);
 
@@ -21,7 +20,6 @@ mongoose
     app.listen(9000, () => {
       console.log("Server running at http://localhost:9000");
     });
-
   })
   .catch((err) => {
     console.log(err);
