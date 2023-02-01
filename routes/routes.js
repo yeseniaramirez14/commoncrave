@@ -1,10 +1,10 @@
 const express = require("express");
-
 const router = express.Router();
 
 const User = require("../collections/user");
 const Group = require("../collections/group");
 const { getLatLongFromAddress } = require("../external-apis/geocoder");
+const { get_alias_from_restaurant } = require("../external-apis/yelp_api");
 
 // Create User (POST)
 router.post("/user", async (req, res) => {
@@ -111,6 +111,21 @@ router.delete("/user/:id", async (req, res) => {
   try {
     await User.deleteOne({ _id: ObjectId(`${req.params.id}`) });
     res.status(200).json({ message: "successfully deleted" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// takes latitude, longitude, and a restaurant name and returns the alias's
+// of that restaurant
+router.post("/restaurant_to_alias", async (req, res) => {
+  try {
+    const alias = await get_alias_from_restaurant(
+      req.body.lat,
+      req.body.lon,
+      req.body.restaurant_name
+    );
+    res.status(200).json({ alias: alias });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
