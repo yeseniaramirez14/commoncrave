@@ -6,13 +6,29 @@ import CravingsCheckBox from "./CravingsCheckBox";
 const Modal = ({ open, onClose, setCravings }) => {
   const [restaurant, setRestaurant] = useState("");
   const [checkedCravings, setCheckedCravings] = useState([]);
+  const [alias, setAlias] = useState([]);
   // const [alias, setAlias] = useState("")
 
-  // async function getAliasFromRestaurant(restaurant) {
-  //     const output = get_alias_from_restaurant(restaurant)
-  //     setAlias(output)
-  //     console.log("aliassssss", alias)
-  // }
+  async function getAliasFromRestaurant(restaurant) {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_HOST}/api/restaurant_to_alias`,
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lat: 30.1471071,
+          lon: -97.7922732,
+          restaurant_name: restaurant,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Restaurant not found");
+    }
+    const alias = await res.json();
+    setAlias(alias);
+  }
 
   // const modalRef = useRef();
 
@@ -54,7 +70,10 @@ const Modal = ({ open, onClose, setCravings }) => {
 
             {/*body*/}
             <div className="relative px-6 flex-auto">
-              <CravingsCheckBox setCheckedCravings={setCheckedCravings} />
+              <CravingsCheckBox
+                setCheckedCravings={setCheckedCravings}
+                restaurantAlias={alias}
+              />
             </div>
 
             {/*fetch cravings*/}
@@ -74,7 +93,7 @@ const Modal = ({ open, onClose, setCravings }) => {
               <button
                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm p-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                // onClick={() => getAliasFromRestaurant(restaurant)}
+                onClick={() => getAliasFromRestaurant(restaurant)}
               >
                 Search
               </button>
