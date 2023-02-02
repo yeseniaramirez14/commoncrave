@@ -10,15 +10,18 @@ const Modal = ({ open, onClose, setCravings }) => {
   // const [alias, setAlias] = useState("")
 
   async function getAliasFromRestaurant(restaurant) {
-    const res = await fetch(`http://localhost:9000/api/restaurant_to_alias`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        lat: 30.1471071,
-        lon: -97.7922732,
-        restaurant_name: restaurant,
-      }),
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_API_HOST}/api/restaurant_to_alias`,
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lat: 30.1471071,
+          lon: -97.7922732,
+          restaurant_name: restaurant,
+        }),
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Restaurant not found");
@@ -67,7 +70,10 @@ const Modal = ({ open, onClose, setCravings }) => {
 
             {/*body*/}
             <div className="relative px-6 flex-auto">
-              <CravingsCheckBox setCheckedCravings={setCheckedCravings} />
+              <CravingsCheckBox
+                setCheckedCravings={setCheckedCravings}
+                restaurantAlias={alias}
+              />
             </div>
 
             {/*fetch cravings*/}
