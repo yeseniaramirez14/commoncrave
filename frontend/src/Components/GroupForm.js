@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 
 const GroupForm = () => {
   const { state } = useLocation();
-  // const [isNewGrouppp, setIsNewGrouppp] = useState(null)
   const [openModal, setOpenModal] = useState(false);
   const [isLocated, setIsLocated] = useState(false);
   const [address, setAddress] = useState("");
@@ -34,9 +33,9 @@ const GroupForm = () => {
       );
       console.log("status", status);
     }
-  };
+    };
 
-  useEffect(() => {
+    useEffect(() => {
     if (lat) {
       getCityFromLatLon();
     }
@@ -51,13 +50,25 @@ const GroupForm = () => {
       let data = await res.json();
       setAddress(data.results[0].formatted_address);
     }
-  }, [lat, lng]);
+    }, [lat, lng]);
 
-  const checkedCravings = cravings.length
+    const checkedCravings = cravings.length
     ? cravings.reduce((total, item) => {
         return total + ", " + item;
       })
     : "";
+    
+    // handle Submit should first post to create a new user and then Create/Join group depending on conditional
+    function handleSubmit() {
+        // post request to make new user
+
+        // check if is new group
+        if (state.isNewGroup) {
+            // post request with Group Name, Name, Location, and Cravings
+        } else {
+            // patch request with GroupID, Name, Location, Cravings
+        }
+    }
 
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
