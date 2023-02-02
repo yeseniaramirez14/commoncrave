@@ -2,7 +2,7 @@
 
 <h2 align="center"> by Andrew Liu and Yesenia Ramirez</h2>
 
-<p align="center">Common Crave is a restaurant picking website where friends can create groups to find a restaurant sharing their common craving that is located in the mid-point of everyone in the group. <br></p>
+<p align="center">Common Crave is a website where friends can create groups to find a restaurant sharing their common craving that is located in the mid-point of everyone in the group. <br></p>
 
 <br>
 <hr>
