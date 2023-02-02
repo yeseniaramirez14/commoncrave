@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const cors = require("cors");
 
 const User = require("../collections/user");
 const Group = require("../collections/group");
