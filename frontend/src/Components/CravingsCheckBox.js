@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import cravingsData from "../cravingsData.json";
 
 const CravingsCheckBox = ({ setCheckedCravings, restaurantAlias }) => {
   const [selected, setSelected] = useState([]);
   const [checkboxStates, setCheckboxStates] = useState({});
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const handleCheckboxChange = (e) => {
     const { value } = e.target;
@@ -24,6 +25,7 @@ const CravingsCheckBox = ({ setCheckedCravings, restaurantAlias }) => {
       if (!selected.includes(restaurantAlias.alias[alia])) {
         selected.push(restaurantAlias.alias[alia]);
         checkboxStates[restaurantAlias.alias[alia]] = true;
+        forceUpdate();
       }
     }
   };
