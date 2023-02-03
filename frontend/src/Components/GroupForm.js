@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { useLocation } from "react-router-dom";
+import "../CSS/styles.css";
 
 const GroupForm = () => {
   const { state } = useLocation();
@@ -8,7 +9,7 @@ const GroupForm = () => {
   const [isLocated, setIsLocated] = useState(false);
   const [address, setAddress] = useState("");
   const [lat, setLat] = useState(null);
-  const [lng, setLng] = useState(null);
+  const [lon, setLon] = useState(null);
   const [status, setStatus] = useState(null);
   const [groupName, setGroupName] = useState("");
   const [groupId, setGroupId] = useState("");
@@ -24,7 +25,7 @@ const GroupForm = () => {
         (position) => {
           setStatus(null);
           setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
+          setLon(position.coords.longitude);
           setIsLocated(true);
         },
         () => {
@@ -33,16 +34,16 @@ const GroupForm = () => {
       );
       console.log("status", status);
     }
-    };
+  };
 
-    useEffect(() => {
+  useEffect(() => {
     if (lat) {
       getCityFromLatLon();
     }
 
     async function getCityFromLatLon() {
       let res = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=postal_code&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&result_type=postal_code&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
       );
       if (!res.ok) {
         throw new Error("Location fetch was not okay");
@@ -50,25 +51,25 @@ const GroupForm = () => {
       let data = await res.json();
       setAddress(data.results[0].formatted_address);
     }
-    }, [lat, lng]);
+  }, [lat, lon]);
 
-    const checkedCravings = cravings.length
+  const checkedCravings = cravings.length
     ? cravings.reduce((total, item) => {
         return total + ", " + item;
       })
     : "";
-    
-    // handle Submit should first post to create a new user and then Create/Join group depending on conditional
-    function handleSubmit() {
-        // post request to make new user
 
-        // check if is new group
-        if (state.isNewGroup) {
-            // post request with Group Name, Name, Location, and Cravings
-        } else {
-            // patch request with GroupID, Name, Location, Cravings
-        }
+  // handle Submit should first post to create a new user and then Create/Join group depending on conditional
+  function handleSubmit() {
+    // post request to make new user
+
+    // check if is new group
+    if (state.isNewGroup) {
+      // post request with Group Name, Name, Location, and Cravings
+    } else {
+      // patch request with GroupID, Name, Location, Cravings
     }
+  }
 
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
@@ -189,17 +190,37 @@ const GroupForm = () => {
             <label htmlFor="cravings" className="max-w-sm">
               Cravings: {checkedCravings} <br></br>{" "}
             </label>
-            <button
-              type="button"
-              onClick={() => setOpenModal(true)}
-              className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded"
-            >
-              Select Cravings
-            </button>
+            {address.length >= 5 || isLocated === true ? (
+              <button
+                type="button"
+                onClick={() => setOpenModal(true)}
+                className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded"
+              >
+                Select Cravings
+              </button>
+            ) : (
+              <div className="cravingsButton flex flex-wrap justify-center">
+                <button
+                  disabled
+                  type="button"
+                  className="shadow bg-grey focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded"
+                  data-bs-toggle="tooltip"
+                  title="Disabled tooltip"
+                >
+                  Select Cravings
+                </button>
+                <div className="hidden textBubble bg-dark-pink text-white py-2 px-2 rounded-full text-xs">
+                  Please enter your address
+                </div>
+              </div>
+            )}
+
             <Modal
               open={openModal}
               onClose={() => setOpenModal(false)}
               setCravings={setCravings}
+              lat={lat}
+              lon={lon}
             />
           </div>
         </div>

@@ -3,11 +3,10 @@ import { createPortal } from "react-dom";
 import CravingsCheckBox from "./CravingsCheckBox";
 // import get_alias_from_restaurant from '../External-Apis/yelp-api';
 
-const Modal = ({ open, onClose, setCravings }) => {
+const Modal = ({ open, onClose, setCravings, lat, lon }) => {
   const [restaurant, setRestaurant] = useState("");
   const [checkedCravings, setCheckedCravings] = useState([]);
   const [alias, setAlias] = useState([]);
-  // const [alias, setAlias] = useState("")
 
   async function getAliasFromRestaurant(restaurant) {
     const res = await fetch(
@@ -16,8 +15,8 @@ const Modal = ({ open, onClose, setCravings }) => {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          lat: 30.1471071,
-          lon: -97.7922732,
+          lat: lat,
+          lon: lon,
           restaurant_name: restaurant,
         }),
       }
@@ -26,20 +25,10 @@ const Modal = ({ open, onClose, setCravings }) => {
     if (!res.ok) {
       throw new Error("Restaurant not found");
     }
-    const alias = await res.json();
-    setAlias(alias);
+    const aliases = await res.json();
+    setAlias(aliases);
+    setRestaurant("");
   }
-
-  // const modalRef = useRef();
-
-  // const closeModal = (e) => {
-  //     if (e.target === modalRef.current) {
-  //         console.log("outside limits sir ")
-  //     }
-  //     else {
-  //         console.log("INSIDE LIMITS")
-  //     }
-  // }
 
   const saveChangesOnClick = () => {
     setCravings(checkedCravings);
