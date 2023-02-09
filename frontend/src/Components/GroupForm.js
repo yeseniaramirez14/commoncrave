@@ -15,6 +15,7 @@ const GroupForm = () => {
   const [groupId, setGroupId] = useState("");
   const [name, setName] = useState("");
   const [cravings, setCravings] = useState([]);
+  // const [isNewGroup, setIsNewGroup]
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -59,17 +60,81 @@ const GroupForm = () => {
       })
     : "";
 
+  const getLatLongFromAddress = async (address) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_HOST}/api/address_to_latlon`,
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: address }),
+      }
+    );
+    const coords = await res.json();
+    setLat(coords["coords"][0]);
+    setLon(coords["coords"][1]);
+    setIsLocated(true);
+  };
+
   // handle Submit should first post to create a new user and then Create/Join group depending on conditional
-  function handleSubmit() {
+  const handleSubmit = async (event) => {
     // post request to make new user
+    event.preventDefault();
+    if (!isLocated) {
+      const coords = await fetch(
+        `${process.env.REACT_APP_API_HOST}/api/address_to_latlon`
+      );
+      setLat(coords[0]);
+      setLon(coords[1]);
+    }
+    const userData = {
+      name: name,
+      lat: lat,
+      lon: lon,
+      cravings: cravings,
+    };
+
+    let userRes = await fetch(`${process.env.REACT_APP_API_HOST}/api/user`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+
+    if (!userRes.ok) {
+      throw new Error("User could not be created");
+    }
+
+    const user = await userRes.json();
+
+    console.log("USER HEREEEE:", user);
 
     // check if is new group
+    const groupData = {
+      owner_id: user["_id"],
+      name: groupName,
+    };
     if (state.isNewGroup) {
       // post request with Group Name, Name, Location, and Cravings
+      let groupRes = await fetch(
+        `${process.env.REACT_APP_API_HOST}/api/group`,
+        {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(groupData),
+        }
+      );
+      if (groupRes.status === 200) {
+        console.log("ayooo");
+      } else {
+        throw new Error("Could not create group");
+      }
+      const group = await groupRes.json();
+
+      console.log("GROUPPPP FINAL", group);
     } else {
+      console.log("in else");
       // patch request with GroupID, Name, Location, Cravings
     }
-  }
+  };
 
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
@@ -193,7 +258,12 @@ const GroupForm = () => {
             {address.length >= 5 || isLocated === true ? (
               <button
                 type="button"
-                onClick={() => setOpenModal(true)}
+                onClick={() => {
+                  if (!isLocated) {
+                    getLatLongFromAddress(address);
+                  }
+                  setOpenModal(true);
+                }}
                 className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded"
               >
                 Select Cravings
@@ -228,6 +298,7 @@ const GroupForm = () => {
           <button
             type="submit"
             className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            onClick={handleSubmit}
           >
             {state.isNewGroup ? "Create" : "Join"}
           </button>
