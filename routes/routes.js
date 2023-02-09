@@ -10,12 +10,10 @@ const { get_alias_from_restaurant } = require("../external-apis/yelp_api");
 // Create User (POST)
 router.post("/user", async (req, res) => {
   try {
-    const [lat, lon] = await getLatLongFromAddress(req.body.address);
-
     const data = new User({
       name: req.body.name,
-      lat: lat,
-      lon: lon,
+      lat: req.body.lat,
+      lon: req.body.lon,
       cravings: req.body.cravings,
     });
 
@@ -127,6 +125,18 @@ router.post("/restaurant_to_alias", async (req, res) => {
       req.body.restaurant_name
     );
     res.status(200).json({ alias: alias });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.post("/address_to_latlon", async (req, res) => {
+  console.log("HELLO");
+  try {
+    console.log("INSIDE ROUTES");
+    const [lat, lon] = await getLatLongFromAddress(req.body.address);
+    console.log("CHECK HERE OK IN ROUTES", [lat, lon]);
+    res.status(200).json({ coords: [lat, lon] });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
