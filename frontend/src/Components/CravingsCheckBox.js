@@ -1,47 +1,26 @@
-import { useState, useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cravingsData from "../cravingsData.json";
-import { addCraving, removeCraving } from "../Redux/userSlice";
+import {
+  addModalCraving,
+  removeModalCraving,
+  editCheckboxStates,
+} from "../Redux/cravingsModalSlice";
 
-const CravingsCheckBox = ({ restaurantAlias }) => {
-  // const [selected, setSelected] = useState([]);
-  const [checkboxStates, setCheckboxStates] = useState({});
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
-  const cravings = useSelector((state) => state.user.cravings);
+const CravingsCheckBox = () => {
   const dispatch = useDispatch();
+  const checkboxStates = useSelector(
+    (state) => state.cravingsModal.checkboxStates
+  );
 
   const handleCheckboxChange = (e) => {
     const { value } = e.target;
     if (e.target.checked) {
-      dispatch(addCraving(value));
+      dispatch(addModalCraving(value));
     } else {
-      dispatch(removeCraving(value));
+      dispatch(removeModalCraving(value));
     }
-    setCheckboxStates({
-      ...checkboxStates,
-      [e.target.id]: !checkboxStates[e.target.id],
-    });
+    dispatch(editCheckboxStates(e.target.id));
   };
-
-  // adds restaurant alias from getAliasFromRestaurant, if it is not already in the selected cravings list
-  const toggleCheckbox = (restaurantAlias) => {
-    for (let alia in restaurantAlias.alias) {
-      if (!cravings.includes(restaurantAlias.alias[alia])) {
-        dispatch(addCraving(restaurantAlias.alias[alia]));
-        // cravings.push(restaurantAlias.alias[alia]);
-        checkboxStates[restaurantAlias.alias[alia]] = true;
-        forceUpdate();
-      }
-    }
-  };
-
-  // useEffect(() => {
-  //   setCheckedCravings(selected);
-  // }, [selected]);
-
-  useEffect(() => {
-    toggleCheckbox(restaurantAlias);
-  }, [restaurantAlias]);
 
   return (
     <>
