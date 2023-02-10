@@ -1,12 +1,24 @@
 import { React, useState } from "react";
 import { createPortal } from "react-dom";
+import { useSelector, useDispatch } from "react-redux";
 import CravingsCheckBox from "./CravingsCheckBox";
-// import get_alias_from_restaurant from '../External-Apis/yelp-api';
+import { setCravings } from "../Redux/userSlice";
+import {
+  addModalCraving,
+  clearModalCravings,
+  removeCravingFromCheckboxStates,
+  editCheckboxStates,
+} from "../Redux/cravingsModalSlice";
 
-const Modal = ({ open, onClose, setCravings, lat, lon }) => {
+const Modal = ({ open, onClose }) => {
+  const dispatch = useDispatch();
   const [restaurant, setRestaurant] = useState("");
-  const [checkedCravings, setCheckedCravings] = useState([]);
-  const [alias, setAlias] = useState([]);
+  const lat = useSelector((state) => state.user.lat);
+  const lon = useSelector((state) => state.user.lon);
+  const cravings = useSelector((state) => state.user.cravings);
+  const modalCravings = useSelector(
+    (state) => state.cravingsModal.modalCravings
+  );
 
   async function getAliasFromRestaurant(restaurant) {
     const res = await fetch(
@@ -26,12 +38,24 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
       throw new Error("Restaurant not found");
     }
     const aliases = await res.json();
-    setAlias(aliases);
+    for (let alias of aliases["alias"]) {
+      if (!modalCravings.includes(alias)) {
+        dispatch(addModalCraving(alias));
+        dispatch(editCheckboxStates(alias));
+      }
+    }
     setRestaurant("");
   }
 
   const saveChangesOnClick = () => {
-    setCravings(checkedCravings);
+    dispatch(setCravings(modalCravings));
+    dispatch(clearModalCravings());
+    onClose();
+  };
+
+  const closeOnClick = () => {
+    dispatch(removeCravingFromCheckboxStates(cravings));
+    dispatch(clearModalCravings());
     onClose();
   };
 
@@ -47,22 +71,11 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
                 {" "}
                 What are you craving?{" "}
               </h3>
-              <button
-                className="p-1 ml-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                onClick={onClose}
-              >
-                <span className="text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
-                  ×
-                </span>
-              </button>
             </div>
 
             {/*body*/}
             <div className="relative px-6 flex-auto">
-              <CravingsCheckBox
-                setCheckedCravings={setCheckedCravings}
-                restaurantAlias={alias}
-              />
+              <CravingsCheckBox />
             </div>
 
             {/*fetch cravings*/}
@@ -86,7 +99,6 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
               >
                 Search
               </button>
-              {/* <p>Restaurant: {restaurant}</p> */}
             </div>
 
             {/*footer*/}
@@ -94,7 +106,7 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
               <button
                 className="text-red bg-pink  active:bg-dark-pink font-bold uppercase px-6 py-3 rounded shadow text-sm outline-none hover:shadow-lg focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={onClose}
+                onClick={closeOnClick}
               >
                 Close
               </button>

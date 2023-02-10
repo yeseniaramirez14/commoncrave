@@ -1,21 +1,25 @@
-import { useState, useEffect } from "react";
-import Modal from "./Modal";
-import { useLocation } from "react-router-dom";
 import "../CSS/styles.css";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Modal from "../Components/Modal";
+import { setLat, setLon } from "../Redux/userSlice";
+import { setModalCravings } from "../Redux/cravingsModalSlice";
 
 const GroupForm = () => {
-  const { state } = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [isLocated, setIsLocated] = useState(false);
   const [address, setAddress] = useState("");
-  const [lat, setLat] = useState(null);
-  const [lon, setLon] = useState(null);
   const [status, setStatus] = useState(null);
   const [groupName, setGroupName] = useState("");
   const [groupId, setGroupId] = useState("");
   const [name, setName] = useState("");
-  const [cravings, setCravings] = useState([]);
-  // const [isNewGroup, setIsNewGroup]
+  const lat = useSelector((state) => state.user.lat);
+  const lon = useSelector((state) => state.user.lon);
+  const isNewGroup = useSelector((state) => state.home.isNewGroup);
+  const cravings = useSelector((state) => state.user.cravings);
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -25,15 +29,14 @@ const GroupForm = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setStatus(null);
-          setLat(position.coords.latitude);
-          setLon(position.coords.longitude);
+          dispatch(setLat(position.coords.latitude));
+          dispatch(setLon(position.coords.longitude));
           setIsLocated(true);
         },
         () => {
           setStatus("Please allow the use of location services.");
         }
       );
-      console.log("status", status);
     }
   };
 
@@ -70,8 +73,8 @@ const GroupForm = () => {
       }
     );
     const coords = await res.json();
-    setLat(coords["coords"][0]);
-    setLon(coords["coords"][1]);
+    dispatch(setLat(coords["coords"][0]));
+    dispatch(setLon(coords["coords"][1]));
     setIsLocated(true);
   };
 
@@ -80,11 +83,7 @@ const GroupForm = () => {
     // post request to make new user
     event.preventDefault();
     if (!isLocated) {
-      const coords = await fetch(
-        `${process.env.REACT_APP_API_HOST}/api/address_to_latlon`
-      );
-      setLat(coords[0]);
-      setLon(coords[1]);
+      getLatLongFromAddress(address);
     }
     const userData = {
       name: name,
@@ -105,14 +104,12 @@ const GroupForm = () => {
 
     const user = await userRes.json();
 
-    console.log("USER HEREEEE:", user);
-
     // check if is new group
-    const groupData = {
-      owner_id: user["_id"],
-      name: groupName,
-    };
-    if (state.isNewGroup) {
+    if (isNewGroup) {
+      const groupData = {
+        owner_id: user["_id"],
+        name: groupName,
+      };
       // post request with Group Name, Name, Location, and Cravings
       let groupRes = await fetch(
         `${process.env.REACT_APP_API_HOST}/api/group`,
@@ -122,29 +119,47 @@ const GroupForm = () => {
           body: JSON.stringify(groupData),
         }
       );
+
       if (groupRes.status === 200) {
-        console.log("ayooo");
+        const group = await groupRes.json();
+        const groupId = group["_id"];
+        console.log("group info here", groupId);
+        navigate(`/group/${groupId}`);
       } else {
         throw new Error("Could not create group");
       }
-      const group = await groupRes.json();
-
-      console.log("GROUPPPP FINAL", group);
     } else {
-      console.log("in else");
+      console.log("joining new group");
       // patch request with GroupID, Name, Location, Cravings
+      const userId = user["_id"];
+      let groupRes = await fetch(
+        `${process.env.REACT_APP_API_HOST}/api/group/${groupId}`,
+        {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ members: userId }),
+        }
+      );
+
+      if (groupRes.status === 200) {
+        const group = await groupRes.json();
+        const groupId = group["group"]["_id"];
+        navigate(`/group/${groupId}`);
+      } else {
+        throw new Error("Could not join group");
+      }
     }
   };
 
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
       <h1 className="text-center pt-10 font-bold text-3xl">
-        {state.isNewGroup ? "Start Group" : "Join Group"}
+        {isNewGroup ? "Start Group" : "Join Group"}
       </h1>
       <form className="pt-5">
         <div className="flex justify-center flex-wrap -mx-3 mb-6">
           <div className="w-half px-3">
-            {state.isNewGroup ? (
+            {isNewGroup ? (
               <label
                 className="block tracking-wide text-black font-bold mb-2"
                 htmlFor="groupName"
@@ -262,6 +277,7 @@ const GroupForm = () => {
                   if (!isLocated) {
                     getLatLongFromAddress(address);
                   }
+                  dispatch(setModalCravings(cravings));
                   setOpenModal(true);
                 }}
                 className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded"
@@ -284,14 +300,7 @@ const GroupForm = () => {
                 </div>
               </div>
             )}
-
-            <Modal
-              open={openModal}
-              onClose={() => setOpenModal(false)}
-              setCravings={setCravings}
-              lat={lat}
-              lon={lon}
-            />
+            <Modal open={openModal} onClose={() => setOpenModal(false)} />
           </div>
         </div>
         <div className="flex justify-center">
@@ -300,7 +309,7 @@ const GroupForm = () => {
             className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
             onClick={handleSubmit}
           >
-            {state.isNewGroup ? "Create" : "Join"}
+            {isNewGroup ? "Create" : "Join"}
           </button>
         </div>
       </form>

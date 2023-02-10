@@ -1,15 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setIsNewGroupTrue, setIsNewGroupFalse } from "../Redux/homeSlice";
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // need to add link to form while passing in newGroup or joinGroup variables so that form can change based on values passed in
   function clickNewGroup() {
-    navigate("/group", { state: { isNewGroup: true } });
+    dispatch(setIsNewGroupTrue());
+    navigate("/group");
   }
 
   function clickJoinGroup() {
-    navigate("/group", { state: { isNewGroup: false } });
+    dispatch(setIsNewGroupFalse());
+    navigate("/group");
   }
 
   return (
