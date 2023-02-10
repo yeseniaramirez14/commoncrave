@@ -1,12 +1,16 @@
 import { React, useState } from "react";
 import { createPortal } from "react-dom";
 import CravingsCheckBox from "./CravingsCheckBox";
+import { useSelector, useDispatch } from "react-redux";
+
 // import get_alias_from_restaurant from '../External-Apis/yelp-api';
 
-const Modal = ({ open, onClose, setCravings, lat, lon }) => {
+const Modal = ({ open, onClose }) => {
   const [restaurant, setRestaurant] = useState("");
   const [checkedCravings, setCheckedCravings] = useState([]);
   const [alias, setAlias] = useState([]);
+  const lat = useSelector((state) => state.user.lat);
+  const lon = useSelector((state) => state.user.lon);
 
   async function getAliasFromRestaurant(restaurant) {
     const res = await fetch(
@@ -29,11 +33,6 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
     setAlias(aliases);
     setRestaurant("");
   }
-
-  const saveChangesOnClick = () => {
-    setCravings(checkedCravings);
-    onClose();
-  };
 
   if (!open) return null;
   return createPortal(
@@ -59,10 +58,7 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
 
             {/*body*/}
             <div className="relative px-6 flex-auto">
-              <CravingsCheckBox
-                setCheckedCravings={setCheckedCravings}
-                restaurantAlias={alias}
-              />
+              <CravingsCheckBox restaurantAlias={alias} />
             </div>
 
             {/*fetch cravings*/}
@@ -101,7 +97,7 @@ const Modal = ({ open, onClose, setCravings, lat, lon }) => {
               <button
                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={saveChangesOnClick}
+                onClick={onClose}
               >
                 Save Changes
               </button>
