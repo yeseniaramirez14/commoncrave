@@ -77,7 +77,7 @@ router.get("/group/:id", async (req, res) => {
 });
 
 // Update Group by ID (PUT)
-router.patch("/group/:id", async (req, res) => {
+router.put("/group/:id", async (req, res) => {
   try {
     const group = await Group.findByIdAndUpdate(
       { _id: req.params.id },

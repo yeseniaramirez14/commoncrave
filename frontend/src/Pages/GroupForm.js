@@ -105,11 +105,11 @@ const GroupForm = () => {
     const user = await userRes.json();
 
     // check if is new group
-    const groupData = {
-      owner_id: user["_id"],
-      name: groupName,
-    };
     if (isNewGroup) {
+      const groupData = {
+        owner_id: user["_id"],
+        name: groupName,
+      };
       // post request with Group Name, Name, Location, and Cravings
       let groupRes = await fetch(
         `${process.env.REACT_APP_API_HOST}/api/group`,
@@ -131,6 +131,23 @@ const GroupForm = () => {
     } else {
       console.log("joining new group");
       // patch request with GroupID, Name, Location, Cravings
+      const userId = user["_id"];
+      let groupRes = await fetch(
+        `${process.env.REACT_APP_API_HOST}/api/group/${groupId}`,
+        {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ members: userId }),
+        }
+      );
+
+      if (groupRes.status === 200) {
+        const group = await groupRes.json();
+        const groupId = group["group"]["_id"];
+        navigate(`/group/${groupId}`);
+      } else {
+        throw new Error("Could not join group");
+      }
     }
   };
 
