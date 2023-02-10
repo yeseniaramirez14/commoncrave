@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
-import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setLat, setLon } from "../Redux/userSlice";
 import "../CSS/styles.css";
 
 const GroupForm = () => {
-  const { state } = useLocation();
   const [openModal, setOpenModal] = useState(false);
   const [isLocated, setIsLocated] = useState(false);
   const [address, setAddress] = useState("");
-  const [lat, setLat] = useState(null);
-  const [lon, setLon] = useState(null);
   const [status, setStatus] = useState(null);
   const [groupName, setGroupName] = useState("");
   const [groupId, setGroupId] = useState("");
   const [name, setName] = useState("");
   const [cravings, setCravings] = useState([]);
-  // const [isNewGroup, setIsNewGroup]
+  const lat = useSelector((state) => state.user.lat);
+  const lon = useSelector((state) => state.user.lon);
+  const isNewGroup = useSelector((state) => state.home.isNewGroup);
+  const dispatch = useDispatch();
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -25,8 +26,8 @@ const GroupForm = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setStatus(null);
-          setLat(position.coords.latitude);
-          setLon(position.coords.longitude);
+          dispatch(setLat(position.coords.latitude));
+          dispatch(setLon(position.coords.longitude));
           setIsLocated(true);
         },
         () => {
@@ -70,8 +71,8 @@ const GroupForm = () => {
       }
     );
     const coords = await res.json();
-    setLat(coords["coords"][0]);
-    setLon(coords["coords"][1]);
+    dispatch(setLat(coords["coords"][0]));
+    dispatch(setLon(coords["coords"][1]));
     setIsLocated(true);
   };
 
@@ -80,11 +81,7 @@ const GroupForm = () => {
     // post request to make new user
     event.preventDefault();
     if (!isLocated) {
-      const coords = await fetch(
-        `${process.env.REACT_APP_API_HOST}/api/address_to_latlon`
-      );
-      setLat(coords[0]);
-      setLon(coords[1]);
+      getLatLongFromAddress(address);
     }
     const userData = {
       name: name,
@@ -112,7 +109,7 @@ const GroupForm = () => {
       owner_id: user["_id"],
       name: groupName,
     };
-    if (state.isNewGroup) {
+    if (isNewGroup) {
       // post request with Group Name, Name, Location, and Cravings
       let groupRes = await fetch(
         `${process.env.REACT_APP_API_HOST}/api/group`,
@@ -139,12 +136,12 @@ const GroupForm = () => {
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
       <h1 className="text-center pt-10 font-bold text-3xl">
-        {state.isNewGroup ? "Start Group" : "Join Group"}
+        {isNewGroup ? "Start Group" : "Join Group"}
       </h1>
       <form className="pt-5">
         <div className="flex justify-center flex-wrap -mx-3 mb-6">
           <div className="w-half px-3">
-            {state.isNewGroup ? (
+            {isNewGroup ? (
               <label
                 className="block tracking-wide text-black font-bold mb-2"
                 htmlFor="groupName"
@@ -300,7 +297,7 @@ const GroupForm = () => {
             className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
             onClick={handleSubmit}
           >
-            {state.isNewGroup ? "Create" : "Join"}
+            {isNewGroup ? "Create" : "Join"}
           </button>
         </div>
       </form>
