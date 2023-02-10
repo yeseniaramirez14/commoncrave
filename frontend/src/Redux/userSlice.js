@@ -14,11 +14,20 @@ export const userSlice = createSlice({
     setLon: (state, action) => {
       state.lon = action.payload;
     },
+    setCravings: (state, action) => {
+      state.cravings = action.payload;
+    },
     addCraving: (state, action) => {
-      state.cravings.push(action.payload);
+      if (action.payload.length === 0) {
+        // pass
+      } else {
+        for (let craving of action.payload) {
+          console.log("what is the craving", craving);
+          state.cravings.push(craving);
+        }
+      }
     },
     removeCraving: (state, action) => {
-      console.log("hat is this", action.payload);
       const idx = state.cravings.indexOf(action.payload);
       state.cravings.splice(idx, 1);
       //   state.cravings.filter((craving) => craving !== action.payload);
@@ -26,6 +35,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setLat, setLon, addCraving, removeCraving } = userSlice.actions;
+export const { setLat, setLon, setCravings, addCraving, removeCraving } =
+  userSlice.actions;
 
 export default userSlice.reducer;

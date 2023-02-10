@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
-import Modal from "./Modal";
-import { useSelector, useDispatch } from "react-redux";
-import { setLat, setLon } from "../Redux/userSlice";
 import "../CSS/styles.css";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Modal from "../Components/Modal";
+import { setLat, setLon } from "../Redux/userSlice";
+import { setModalCravings } from "../Redux/cravingsModalSlice";
 
 const GroupForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [isLocated, setIsLocated] = useState(false);
   const [address, setAddress] = useState("");
@@ -16,7 +20,6 @@ const GroupForm = () => {
   const lon = useSelector((state) => state.user.lon);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
   const cravings = useSelector((state) => state.user.cravings);
-  const dispatch = useDispatch();
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -34,7 +37,6 @@ const GroupForm = () => {
           setStatus("Please allow the use of location services.");
         }
       );
-      console.log("status", status);
     }
   };
 
@@ -102,8 +104,6 @@ const GroupForm = () => {
 
     const user = await userRes.json();
 
-    console.log("USER HEREEEE:", user);
-
     // check if is new group
     const groupData = {
       owner_id: user["_id"],
@@ -119,16 +119,17 @@ const GroupForm = () => {
           body: JSON.stringify(groupData),
         }
       );
+
       if (groupRes.status === 200) {
-        console.log("ayooo");
+        const group = await groupRes.json();
+        const groupId = group["_id"];
+        console.log("group info here", groupId);
+        navigate(`/group/${groupId}`);
       } else {
         throw new Error("Could not create group");
       }
-      const group = await groupRes.json();
-
-      console.log("GROUPPPP FINAL", group);
     } else {
-      console.log("in else");
+      console.log("joining new group");
       // patch request with GroupID, Name, Location, Cravings
     }
   };
@@ -259,6 +260,7 @@ const GroupForm = () => {
                   if (!isLocated) {
                     getLatLongFromAddress(address);
                   }
+                  dispatch(setModalCravings(cravings));
                   setOpenModal(true);
                 }}
                 className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white text-sm py-1 px-2 rounded"
@@ -281,7 +283,6 @@ const GroupForm = () => {
                 </div>
               </div>
             )}
-
             <Modal open={openModal} onClose={() => setOpenModal(false)} />
           </div>
         </div>
