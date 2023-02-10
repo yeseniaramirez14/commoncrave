@@ -18,7 +18,10 @@ export const userSlice = createSlice({
       state.cravings.push(action.payload);
     },
     removeCraving: (state, action) => {
-      state.cravings.filter((craving) => craving !== action.payload);
+      console.log("hat is this", action.payload);
+      const idx = state.cravings.indexOf(action.payload);
+      state.cravings.splice(idx, 1);
+      //   state.cravings.filter((craving) => craving !== action.payload);
     },
   },
 });

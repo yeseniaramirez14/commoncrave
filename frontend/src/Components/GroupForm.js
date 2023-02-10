@@ -12,10 +12,10 @@ const GroupForm = () => {
   const [groupName, setGroupName] = useState("");
   const [groupId, setGroupId] = useState("");
   const [name, setName] = useState("");
-  const [cravings, setCravings] = useState([]);
   const lat = useSelector((state) => state.user.lat);
   const lon = useSelector((state) => state.user.lon);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
+  const cravings = useSelector((state) => state.user.cravings);
   const dispatch = useDispatch();
 
   const getLocation = async () => {
@@ -282,13 +282,7 @@ const GroupForm = () => {
               </div>
             )}
 
-            <Modal
-              open={openModal}
-              onClose={() => setOpenModal(false)}
-              setCravings={setCravings}
-              lat={lat}
-              lon={lon}
-            />
+            <Modal open={openModal} onClose={() => setOpenModal(false)} />
           </div>
         </div>
         <div className="flex justify-center">
