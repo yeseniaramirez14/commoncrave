@@ -1,7 +1,6 @@
 import andrew from "../images/andrew.jpg";
 import yesenia from "../images/yesenia.jpg";
 import Github from "../images/icons/Github.png";
-import Discord from "../images/icons/Discord.png";
 import LinkedIn from "../images/icons/LinkedIn.png";
 import Portfolio from "../images/icons/Portfolio.png";
 
@@ -36,16 +35,13 @@ const AboutUs = () => {
             ></img>
           </div>
           <div className="flex justify-evenly p-5">
-            <button type="button">
+            <button type="button" onClick={()=>window.open("https://github.com/theandrewliu")}>
               <img className="w-10" src={Github} alt="github icon" />
             </button>
-            <button type="button">
+            <button type="button" onClick={()=>window.open("https://www.linkedin.com/in/theandrewliu/")}>
               <img className="w-10" src={LinkedIn} alt="linkedin icon" />
             </button>
-            <button type="button">
-              <img className="w-10" src={Discord} alt="discord icon" />
-            </button>
-            <button type="button">
+            <button type="button" onClick={()=>window.open("https://andrewliu.app")}>
               <img className="w-9" src={Portfolio} alt="portfolio icon" />
             </button>
           </div>
@@ -61,13 +57,13 @@ const AboutUs = () => {
             ></img>
           </div>
           <div className="flex justify-evenly p-5">
-            <button type="button">
+            <button type="button" onClick={()=>window.open("https://github.com/yeseniaramirez14")}>
               <img className="w-10" src={Github} alt="github icon" />
             </button>
-            <button type="button">
+            <button type="button" onClick={()=>window.open("https://www.linkedin.com/in/yeseniaramirez14/")}>
               <img className="w-10" src={LinkedIn} alt="linkedin icon" />
             </button>
-            <button type="button">
+            <button type="button" onClick={()=>window.open("https://yeseniar.dev/")}>
               <img className="w-9" src={Portfolio} alt="portfolio icon" />
             </button>
           </div>
