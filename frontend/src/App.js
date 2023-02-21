@@ -5,6 +5,8 @@ import CravingsCheckBox from "./Components/CravingsCheckBox";
 import Home from "./Pages/Home";
 import AboutUs from "./Pages/AboutUs";
 import GroupList from "./Pages/GroupList";
+import JoinGroupFromUrlForm from "./Pages/JoinGroupFromUrlForm";
+
 
 const App = () => {
   return (
@@ -16,6 +18,7 @@ const App = () => {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/cravings" element={<CravingsCheckBox />} />
         <Route path="/group/:id" element={<GroupList />} />
+        <Route path="/joingroup/:id" element={<JoinGroupFromUrlForm />} />
       </Routes>
     </BrowserRouter>
   );
