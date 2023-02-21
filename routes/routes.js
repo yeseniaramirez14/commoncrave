@@ -35,6 +35,7 @@ router.get("/user", async (req, res) => {
   }
 });
 
+
 // Create Group (POST)
 router.post("/group", async (req, res) => {
   const user = await User.findById(req.body.owner_id).exec();
@@ -75,6 +76,22 @@ router.get("/group/:id", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+// Get all Users in a Group
+router.get("/group/:id/users", async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id).exec();
+    let users = []
+    for (let member of group.members) {
+      let user = await User.findById(member).exec()
+      users.push(user)
+    }
+    res.status(200).json({ users: users})
+    return users
+  } catch (error) {
+    res.status(400).json({message: error.message})
+  }
+})
 
 // Update Group by ID (PUT)
 router.put("/group/:id", async (req, res) => {

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react"
+import PacmanLoader from "react-spinners/PacmanLoader"
 
 const GroupList = () => {
   const { id } = useParams();
@@ -32,22 +33,31 @@ const GroupList = () => {
 
   return(
     <>
-      <div> {loading ? "loading": "done loading"}</div>
-      <div>You have successfully created/joined a group {id}</div>;
-      <div>
-        <h1>Add friends to your group!</h1>
-        Unique url link here
-        {`${process.env.REACT_APP_API_HOST}/joingroup/${id}`}
-      </div>
-      <div>
-        <h1>Friends that have joined</h1>
-        {users.map(user => {
-          return (
-            <p>{users.indexOf(user)+1}. { user.name }</p>
-          )
-        })}
-      </div>
-      <button>Get Results</button>
+    <div>
+      {loading ? (
+        <div>
+          <PacmanLoader />
+        </div>
+        ) : (
+          <>
+            <div>You have successfully created/joined a group {id}</div>
+            <div>
+              <h1>Add friends to your group!</h1>
+              Unique url link here
+              {`${process.env.REACT_APP_API_HOST}/joingroup/${id}`}
+            </div>
+            <div>
+              <h1>Friends that have joined</h1>
+              {users.map(user => {
+                return (
+                  <p>{users.indexOf(user)+1}. { user.name }</p>
+                  )
+                })}
+            </div>
+            <button>Get Results</button>
+          </>
+          )}
+    </div>
     </>
     )
 };
