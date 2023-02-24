@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Components/Modal";
+import { setIsNewGroupFalse } from "../Redux/homeSlice";
 import { setLat, setLon } from "../Redux/userSlice";
 import { setModalCravings } from "../Redux/cravingsModalSlice";
 
-const GroupForm = () => {
+const GroupForm = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
@@ -20,6 +21,16 @@ const GroupForm = () => {
   const lon = useSelector((state) => state.user.lon);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
   const cravings = useSelector((state) => state.user.cravings);
+
+  useEffect(()=>{
+    if (Object.keys(props).length === 0){
+      console.log("there are no props")
+    } else {
+      console.log("the group id is ", props.id)
+      dispatch(setIsNewGroupFalse())
+      setGroupId(props.id)
+    }
+  },[])
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
