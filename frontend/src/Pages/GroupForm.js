@@ -17,6 +17,7 @@ const GroupForm = (props) => {
   const [groupName, setGroupName] = useState("");
   const [groupId, setGroupId] = useState("");
   const [name, setName] = useState("");
+  const [isJoinFromURL, setIsJoinFromURL] = useState(false)
   const lat = useSelector((state) => state.user.lat);
   const lon = useSelector((state) => state.user.lon);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
@@ -29,6 +30,7 @@ const GroupForm = (props) => {
       console.log("the group id is ", props.id)
       dispatch(setIsNewGroupFalse())
       setGroupId(props.id)
+      setIsJoinFromURL(true)
     }
   },[])
 
@@ -198,6 +200,7 @@ const GroupForm = (props) => {
                   name="groupId"
                   id="groupId"
                   value={groupId}
+                  readOnly={isJoinFromURL}
                   onChange={(e) => {
                     setGroupId(e.target.value);
                   }}
