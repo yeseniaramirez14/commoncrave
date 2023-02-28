@@ -35,7 +35,6 @@ router.get("/user", async (req, res) => {
   }
 });
 
-
 // Create Group (POST)
 router.post("/group", async (req, res) => {
   const user = await User.findById(req.body.owner_id).exec();
@@ -46,6 +45,7 @@ router.post("/group", async (req, res) => {
     name: req.body.name,
     owner_id: user._id,
     members: user,
+    isFinal: false,
   });
 
   try {
@@ -81,17 +81,17 @@ router.get("/group/:id", async (req, res) => {
 router.get("/group/:id/users", async (req, res) => {
   try {
     const group = await Group.findById(req.params.id).exec();
-    let users = []
+    let users = [];
     for (let member of group.members) {
-      let user = await User.findById(member).exec()
-      users.push(user)
+      let user = await User.findById(member).exec();
+      users.push(user);
     }
-    res.status(200).json({ users: users})
-    return users
+    res.status(200).json({ users: users });
+    return users;
   } catch (error) {
-    res.status(400).json({message: error.message})
+    res.status(400).json({ message: error.message });
   }
-})
+});
 
 // Update Group by ID (PUT)
 router.put("/group/:id", async (req, res) => {
@@ -102,6 +102,23 @@ router.put("/group/:id", async (req, res) => {
         $push: {
           members: req.body.members,
         },
+      },
+      { returnDocument: "after", runValidators: true }
+    );
+    res.status(200).json({ group: group });
+    return group;
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Finalize Group (PUT)
+router.put("/finalize_group/:id", async (req, res) => {
+  try {
+    const group = await Group.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        isFinal: true,
       },
       { returnDocument: "after", runValidators: true }
     );

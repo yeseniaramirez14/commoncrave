@@ -155,7 +155,12 @@ const GroupForm = (props) => {
       if (groupRes.status === 200) {
         const group = await groupRes.json();
         const groupId = group["group"]["_id"];
-        navigate(`/group/${groupId}`);
+        const isGroupFinal = group["group"]["isFinal"];
+        if (isGroupFinal) {
+          navigate(`/group/results`);
+        } else {
+          navigate(`/group/${groupId}`);
+        }
       } else {
         throw new Error("Could not join group");
       }
