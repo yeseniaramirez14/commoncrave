@@ -17,22 +17,22 @@ const GroupForm = (props) => {
   const [groupName, setGroupName] = useState("");
   const [groupId, setGroupId] = useState("");
   const [name, setName] = useState("");
-  const [isJoinFromURL, setIsJoinFromURL] = useState(false)
+  const [isJoinFromURL, setIsJoinFromURL] = useState(false);
   const lat = useSelector((state) => state.user.lat);
   const lon = useSelector((state) => state.user.lon);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
   const cravings = useSelector((state) => state.user.cravings);
 
-  useEffect(()=>{
-    if (Object.keys(props).length === 0){
-      console.log("there are no props")
+  useEffect(() => {
+    if (Object.keys(props).length === 0) {
+      console.log("there are no props");
     } else {
-      console.log("the group id is ", props.id)
-      dispatch(setIsNewGroupFalse())
-      setGroupId(props.id)
-      setIsJoinFromURL(true)
+      console.log("the group id is ", props.id);
+      dispatch(setIsNewGroupFalse());
+      setGroupId(props.id);
+      setIsJoinFromURL(true);
     }
-  },[])
+  }, []);
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -157,7 +157,12 @@ const GroupForm = (props) => {
       if (groupRes.status === 200) {
         const group = await groupRes.json();
         const groupId = group["group"]["_id"];
-        navigate(`/group/${groupId}`);
+        const isGroupFinal = group["group"]["isFinal"];
+        if (isGroupFinal) {
+          navigate(`/group/results`);
+        } else {
+          navigate(`/group/${groupId}`);
+        }
       } else {
         throw new Error("Could not join group");
       }
