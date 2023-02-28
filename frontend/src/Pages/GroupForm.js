@@ -30,9 +30,6 @@ const GroupForm = (props) => {
       console.log("the group id is ", props.id);
       dispatch(setIsNewGroupFalse());
       setGroupId(props.id);
-      console.log("the group id is ", props.id);
-      dispatch(setIsNewGroupFalse());
-      setGroupId(props.id);
       setIsJoinFromURL(true);
     }
   }, []);
