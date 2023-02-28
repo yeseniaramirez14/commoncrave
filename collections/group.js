@@ -17,6 +17,9 @@ const groupSchema = new Schema({
       ref: "User",
     },
   ],
+  isFinal: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Group", groupSchema);

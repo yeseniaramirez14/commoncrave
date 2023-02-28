@@ -22,15 +22,15 @@ const GroupForm = (props) => {
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
   const cravings = useSelector((state) => state.user.cravings);
 
-  useEffect(()=>{
-    if (Object.keys(props).length === 0){
-      console.log("there are no props")
+  useEffect(() => {
+    if (Object.keys(props).length === 0) {
+      console.log("there are no props");
     } else {
-      console.log("the group id is ", props.id)
-      dispatch(setIsNewGroupFalse())
-      setGroupId(props.id)
+      console.log("the group id is ", props.id);
+      dispatch(setIsNewGroupFalse());
+      setGroupId(props.id);
     }
-  },[])
+  }, []);
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
