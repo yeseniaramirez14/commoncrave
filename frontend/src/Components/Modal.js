@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import CravingsCheckBox from "./CravingsCheckBox";
+import RestaurantAliasFetchSuccessMsg from "./RestaurantAliasFetchSuccessMsg";
 import { setCravings } from "../Redux/userSlice";
 import {
   addModalCraving,
@@ -13,6 +14,8 @@ import {
 const Modal = ({ open, onClose }) => {
   const dispatch = useDispatch();
   const [restaurant, setRestaurant] = useState("");
+  const [restaurantAliases, setRestaurantAliases] = useState("");
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const lat = useSelector((state) => state.user.lat);
   const lon = useSelector((state) => state.user.lon);
   const cravings = useSelector((state) => state.user.cravings);
@@ -21,6 +24,7 @@ const Modal = ({ open, onClose }) => {
   );
 
   async function getAliasFromRestaurant(restaurant) {
+    setRestaurantAliases([]);
     const res = await fetch(
       `${process.env.REACT_APP_API_HOST}/api/restaurant_to_alias`,
       {
@@ -38,13 +42,19 @@ const Modal = ({ open, onClose }) => {
       throw new Error("Restaurant not found");
     }
     const aliases = await res.json();
+
     for (let alias of aliases["alias"]) {
       if (!modalCravings.includes(alias)) {
         dispatch(addModalCraving(alias));
         dispatch(editCheckboxStates(alias));
       }
     }
+    setRestaurantAliases(aliases["alias"].join(", "));
     setRestaurant("");
+    setShowSuccessMsg(true);
+    setTimeout(() => {
+      setShowSuccessMsg(false);
+    }, 3000);
   }
 
   const saveChangesOnClick = () => {
@@ -92,6 +102,11 @@ const Modal = ({ open, onClose }) => {
                   setRestaurant(e.target.value);
                 }}
               />
+              {showSuccessMsg && (
+                <RestaurantAliasFetchSuccessMsg
+                  restaurantAliases={restaurantAliases}
+                />
+              )}
               <button
                 className="bg-pink text-white active:bg-dark-pink font-bold uppercase text-sm p-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
