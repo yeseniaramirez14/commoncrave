@@ -44,19 +44,20 @@ const GroupList = () => {
     <>
       <div>
         {loading ? (
-          <div className="flex items-center justify-center h-screen">
+          <div className="flex items-center justify-center h-screen bg-yellow">
             <PacmanLoader />
           </div>
         ) : (
           <>
+          <div className="h-screen flex flex-col items-center font-worksans bg-yellow">
             {isNewGroup ? (
               <div> You have successfully created a new group!</div>
             ) : (
               <div>You have successfully joined group {id}</div>
             )}
-            <div>
-              <h1>Add friends to your group!</h1>
-              <div>
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-3xl font-bold">Add friends to your group!</h1>
+              <div className="flex flex-row">
                 <button onClick={() => copyText()}>
                   <img className="scale-50" src={copyIcon} alt="copy text" />
                 </button>
@@ -76,7 +77,14 @@ const GroupList = () => {
                 );
               })}
             </div>
-            <button>Get Results</button>
+            { isNewGroup ? (
+              <div> Waiting on group leader to get results </div>
+            ) : (
+              <button className ="w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
+                Get Results
+              </button>
+            )}
+          </div>
           </>
         )}
       </div>
