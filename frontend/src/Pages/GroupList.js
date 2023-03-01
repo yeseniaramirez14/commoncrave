@@ -55,42 +55,46 @@ const GroupList = () => {
           </div>
         ) : (
           <>
-          <div className="h-screen flex flex-col items-center font-worksans bg-yellow">
-            {isNewGroup ? (
-              <div> You have successfully created a new group!</div>
-            ) : (
-              <div>You have successfully joined group {id}</div>
-            )}
-            <div className="flex flex-col items-center justify-center">
-              <h1 className="text-3xl font-bold">Add friends to your group!</h1>
-              <div className="flex flex-row">
-                <button onClick={() => copyText()}>
-                  <img className="scale-50" src={copyIcon} alt="copy text" />
-                </button>
-                <input
-                  type="text"
-                  value={`${process.env.REACT_APP_HOST}/joingroup/${id}`}
-                ></input>
+            <div className="h-screen flex flex-col items-center font-worksans bg-yellow">
+              {isNewGroup ? (
+                <div> You have successfully created a new group!</div>
+              ) : (
+                <div>You have successfully joined group {id}</div>
+              )}
+              <div className="flex flex-col items-center justify-center">
+                <h1 className="text-3xl font-bold">
+                  Add friends to your group!
+                </h1>
+                <div className="flex flex-row">
+                  <button onClick={() => copyText()}>
+                    <img className="scale-50" src={copyIcon} alt="copy text" />
+                  </button>
+                  <input
+                    type="text"
+                    value={`${process.env.REACT_APP_HOST}/joingroup/${id}`}
+                  ></input>
+                </div>
               </div>
+              <div>
+                <h1>Friends that have joined</h1>
+                {users.map((user) => {
+                  return (
+                    <p key={users.indexOf(user) + 1}>
+                      {users.indexOf(user) + 1}. {user.name}
+                    </p>
+                  );
+                })}
+              </div>
+              {/* add !isNewGroup */}
+              {console.log("clear me when done bottom on grouplist")}
+              {isNewGroup ? (
+                <div> Waiting on group leader to get results </div>
+              ) : (
+                <button className="w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
+                  Get Results
+                </button>
+              )}
             </div>
-            <div>
-              <h1>Friends that have joined</h1>
-              {users.map((user) => {
-                return (
-                  <p key={users.indexOf(user) + 1}>
-                    {users.indexOf(user) + 1}. {user.name}
-                  </p>
-                );
-              })}
-            </div>
-            { isNewGroup ? (
-              <div> Waiting on group leader to get results </div>
-            ) : (
-              <button className ="w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
-                Get Results
-              </button>
-            )}
-          </div>
           </>
         )}
       </div>
