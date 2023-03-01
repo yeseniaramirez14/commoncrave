@@ -6,7 +6,7 @@ import Home from "./Pages/Home";
 import AboutUs from "./Pages/AboutUs";
 import GroupList from "./Pages/GroupList";
 import JoinGroupFromUrlForm from "./Pages/JoinGroupFromUrlForm";
-
+import GroupResult from "./Pages/GroupResult";
 
 const App = () => {
   return (
@@ -19,6 +19,7 @@ const App = () => {
         <Route path="/cravings" element={<CravingsCheckBox />} />
         <Route path="/group/:id" element={<GroupList />} />
         <Route path="/joingroup/:id" element={<JoinGroupFromUrlForm />} />
+        <Route path="/group/:id/results" element={<GroupResult />} />
       </Routes>
     </BrowserRouter>
   );
