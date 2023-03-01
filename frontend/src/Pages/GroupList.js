@@ -38,6 +38,12 @@ const GroupList = () => {
     );
   }
 
+  const getResultsOnClick = () => {
+    //api call to set isFinal to true
+
+    // navigate to GroupResult
+  }
+
   // for testing we're using group 63e6d45c982202426c98cc09
 
   return (
