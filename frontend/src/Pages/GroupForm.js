@@ -25,9 +25,7 @@ const GroupForm = (props) => {
 
   useEffect(() => {
     if (Object.keys(props).length === 0) {
-      console.log("there are no props");
     } else {
-      console.log("the group id is ", props.id);
       dispatch(setIsNewGroupFalse());
       setGroupId(props.id);
       setIsJoinFromURL(true);
@@ -159,7 +157,7 @@ const GroupForm = (props) => {
         const groupId = group["group"]["_id"];
         const isGroupFinal = group["group"]["isFinal"];
         if (isGroupFinal) {
-          navigate(`/group/results`);
+          navigate(`/group/${groupId}/results`);
         } else {
           navigate(`/group/${groupId}`);
         }
