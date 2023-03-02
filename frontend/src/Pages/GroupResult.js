@@ -19,14 +19,15 @@ const GroupResult = () => {
         if (fetchedRef.current) return;
         fetchedRef.current = true;
 
-        getAllUserInfo()
+        getGroupInfo()
         setLoading(false)
     },[])
 
 
   // Get every craving from each user, create a dictionary that counts each instance, get max
   // if there is a tie, create an array of tied cravings, use randomint between 0-array.length-1
-    const getAllUserInfo = async () => {
+    const getGroupInfo = async () => {
+        // fetch to get all users of specific group
         const res = await fetch(`${process.env.REACT_APP_API_HOST}/api/group/${id}/users`)
         if (!res.ok) {
             throw new Error("Could not fetch all users");
@@ -56,9 +57,9 @@ const GroupResult = () => {
         let tempLon = lonSum/totalUsers
         setAvgLat(latSum/totalUsers)
         setAvgLon(lonSum/totalUsers)
-        let finalcraving = finalCategory(cravingsDict)
+        let finalcravings = finalCategory(cravingsDict)
 
-        getRestaurantFromInfo(tempLat, tempLon, finalcraving)
+        getRestaurantFromInfo(tempLat, tempLon, finalcravings)
     }
     
     // using groupCraving and average lat/lon, make API call to yelpAPI to get the list of restaurants
@@ -96,16 +97,7 @@ const GroupResult = () => {
             maxAliases.push(alias);
           }
         }
-        if (maxAliases.length === 1) {
-          setGroupCraving(maxAliases[0])
-          console.log("finalCategory",maxAliases[0])
-          return maxAliases[0]
-        } else {
-            let output = maxAliases[Math.floor(Math.random() * maxAliases.length)]
-            setGroupCraving(output);
-            console.log("finalCategory",output)
-            return output
-        }
+        return maxAliases
       };
 
 
