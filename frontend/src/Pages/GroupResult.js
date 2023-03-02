@@ -32,9 +32,10 @@ const GroupResult = () => {
             throw new Error("Could not fetch all users");
         }
         let data = await res.json();
-    
+        
         setUsers(data.users);
-
+        
+        // get average lat/lon of all users
         let cravingsDict = {}
         let latSum = 0
         let lonSum = 0
@@ -59,7 +60,8 @@ const GroupResult = () => {
 
         getRestaurantFromInfo(tempLat, tempLon, finalcraving)
     }
-
+    
+    // using groupCraving and average lat/lon, make API call to yelpAPI to get the list of restaurants
     const getRestaurantFromInfo = async (lati,long,cat) => {
         console.log(lati, long, cat)
         const data = await fetch(
@@ -82,7 +84,7 @@ const GroupResult = () => {
         console.log("rest info ", restaurantInfo.data.businesses)
         setRestaurants(restaurantInfo.data.businesses)
     }
-
+    
     function finalCategory(alias_dictionary) {
         let maxCount = 0;
         let maxAliases = [];
@@ -107,9 +109,7 @@ const GroupResult = () => {
       };
 
 
-  // get average lat/lon of all users
 
-  // using groupCraving and average lat/lon, make API call to yelpAPI to get the list of restaurants
 
   // create a function for the try again and put it in a useEffect that sets the restaurant name and location for the google pin
   return (
