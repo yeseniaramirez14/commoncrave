@@ -38,6 +38,14 @@ module.exports = {
   // takes latitude, longitude, and an alias to search for
   // restuarants within a 5 mile radius
   search_business_by_alias: async (lat, lon, category) => {
+    let category_field = ""
+    if (category.length === 1) {
+      category_field = "categories=" + category[0] + "&"
+    } else {
+      for (let craving of category) {
+        category_field += "categories=" + craving + "&"
+      }
+    }
     const options = {
       method: 'GET',
       headers: {
@@ -46,7 +54,7 @@ module.exports = {
       }
     };
     try{
-      let res = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lon}&categories=${category}&sort_by=best_match&limit=7`, options)
+      let res = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lon}&${category_field}sort_by=best_match&limit=7`, options)
       let data = await res.json();
       return data
     } catch (error) {
@@ -56,4 +64,4 @@ module.exports = {
 };
 
 // get_alias_from_restuarant(91748, 'Myungrang')
-// search_business_by_alias(33.9565899, -117.9110073, "japanese");
+// search_business_by_alias(33.9565899, -117.9110073, ["japanese"]);
