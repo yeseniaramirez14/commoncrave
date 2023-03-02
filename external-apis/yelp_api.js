@@ -37,21 +37,21 @@ module.exports = {
 
   // takes latitude, longitude, and an alias to search for
   // restuarants within a 5 mile radius
-  search_business_by_alias: (lat, lon, category) => {
-    sdk
-      .v3_business_search({
-        latitude: String(lat),
-        longitude: String(lon),
-        radius: "8000",
-        categories: category,
-        sort_by: "best_match",
-        limit: "7",
-      })
-      .then(({ data }) => {
-        console.log(data);
-        return data;
-      })
-      .catch((err) => console.error(err));
+  search_business_by_alias: async (lat, lon, category) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.YELP_API_KEY}`
+      }
+    };
+    try{
+      let res = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lon}&categories=${category}&sort_by=best_match&limit=7`, options)
+      let data = await res.json();
+      return data
+    } catch (error) {
+      console.error(err)
+    }
   },
 };
 

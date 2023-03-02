@@ -5,7 +5,7 @@ const cors = require("cors");
 const User = require("../collections/user");
 const Group = require("../collections/group");
 const { getLatLongFromAddress } = require("../external-apis/geocoder");
-const { get_alias_from_restaurant } = require("../external-apis/yelp_api");
+const { get_alias_from_restaurant, search_business_by_alias } = require("../external-apis/yelp_api");
 
 // Create User (POST)
 router.post("/user", async (req, res) => {
@@ -165,15 +165,26 @@ router.post("/restaurant_to_alias", async (req, res) => {
 });
 
 router.post("/address_to_latlon", async (req, res) => {
-  console.log("HELLO");
   try {
-    console.log("INSIDE ROUTES");
     const [lat, lon] = await getLatLongFromAddress(req.body.address);
-    console.log("CHECK HERE OK IN ROUTES", [lat, lon]);
     res.status(200).json({ coords: [lat, lon] });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
+
+// takes lat, lon, and alias to return a list of restaurants around the area
+router.post("/alias_to_restaurant", async (req, res) => {
+  try {
+    const data = await search_business_by_alias(
+      req.body.lat,
+      req.body.lon,
+      req.body.category
+    );
+    res.status(200).json({data: data});
+  } catch(error) {
+    res.status(400).json({message: error.message});
+  }
+})
 
 module.exports = router;
