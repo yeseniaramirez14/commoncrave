@@ -20,6 +20,37 @@ const groupSchema = new Schema({
   isFinal: {
     type: Boolean,
   },
+  finalRestaurants: [
+    {
+      name: {
+        type: String
+      },
+      coordinates: {
+        latitude: {
+          type: Number
+        },
+        longitude: {
+          type: Number
+        }
+      },
+      url: {
+        type: String
+      },
+      location: {
+        display_address: [
+          {
+            type: String
+          }
+        ]
+      },
+      price: {
+        type: String
+      },
+      rating: {
+        type: Number
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model("Group", groupSchema);

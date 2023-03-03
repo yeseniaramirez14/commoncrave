@@ -38,8 +38,83 @@ const GroupList = () => {
     );
   }
 
-  const getResultsOnClick = () => {
-    //api call to set isFinal to true
+  function finalCategory(alias_dictionary) {
+    let maxCount = 0;
+    let maxAliases = [];
+    for (let alias in alias_dictionary) {
+      if (alias_dictionary[alias] > maxCount) {
+        maxCount = alias_dictionary[alias];
+        maxAliases = [alias];
+      } else if (alias_dictionary[alias] === maxCount) {
+        maxAliases.push(alias);
+      }
+    }
+    return maxAliases
+  };
+
+  const getRestaurantFromInfo = async (lat, lon, categories) => {
+    const data = await fetch(
+      `${process.env.REACT_APP_API_HOST}/api/alias_to_restaurant`,
+        {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+              lat: lat, 
+              lon: lon, 
+              category: categories 
+          }),
+        }
+    );
+    if (!data.ok) {
+      throw new Error("Could not get restaurant from lat/lon/categories")
+    }
+    let restaurantInfo = await data.json();
+    let filtered_restuarant_data = restaurantInfo.data.businesses.map(obj => (
+      {
+        name: obj.name, 
+        coordinates: {
+          latitude: obj.coordinates.latitude, 
+          longitude: obj.coordinates.longitude
+        }, 
+        url: obj.url, 
+        location: {
+          display_address: obj.location.display_address
+        }, 
+        price: obj.price, 
+        rating: obj.rating
+      }
+      ))
+    return filtered_restuarant_data
+  }
+
+  const getResultsOnClick = async () => {
+    // assemble group info
+    let cravingsDict = {}
+    let latSum = 0
+    let lonSum = 0
+    let totalUsers = users.length
+    for (let user of users){
+      latSum += user.lat 
+      lonSum += user.lon 
+      let userCravings = user.cravings 
+      for(let craving of userCravings){
+        if (craving in cravingsDict) {
+          cravingsDict[craving] ++
+        } else {
+          cravingsDict[craving] = 1
+        }
+      };
+    };
+    let avgLat = latSum/totalUsers
+    let avgLon = lonSum/totalUsers
+    let finalCravings = finalCategory(cravingsDict)
+
+    // make api call to yelp and get back list of 7 restaurant objects
+    let restaurants_from_yelp = await getRestaurantFromInfo(avgLat,avgLon,finalCravings)
+    console.log("here", restaurants_from_yelp)
+    // make api call to Mongo and save the 7 restaurant objects
+
+    // api call to set isFinal to true
 
     // navigate to GroupResult
   }
@@ -90,7 +165,7 @@ const GroupList = () => {
               {isNewGroup ? (
                 <div> Waiting on group leader to get results </div>
               ) : (
-                <button className="w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
+                <button onClick={()=>getResultsOnClick()} className="w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
                   Get Results
                 </button>
               )}
