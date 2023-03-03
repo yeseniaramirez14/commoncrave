@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom";
 import PacmanLoader from "react-spinners/PacmanLoader";
+import GoogleMapComponent from "../Components/GoogleMapComponent";
+
 
 
 const GroupResult = () => {
@@ -80,6 +82,10 @@ const GroupResult = () => {
                 </div>
                 <button onClick={tryAgainOnClick}>Try Again</button>
             </div>
+            <GoogleMapComponent 
+                lat={finalGroup.finalRestaurants[finalGroup.restaurant_idx]["coordinates"]["latitude"]}
+                lon={finalGroup.finalRestaurants[finalGroup.restaurant_idx]["coordinates"]["longitude"]}
+            />
             </>
         )}
     </>
