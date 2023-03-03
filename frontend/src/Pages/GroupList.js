@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import PacmanLoader from "react-spinners/PacmanLoader";
@@ -6,6 +6,7 @@ import copyIcon from "../images/icons/copyIcon.png";
 
 const GroupList = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
@@ -18,7 +19,11 @@ const GroupList = () => {
       throw new Error("Could not fetch all users");
     }
     let data = await res.json();
+    console.log("data ", data)
     setUsers(data.users);
+    if (data.isFinal === true){
+      navigate(`/group/${id}/results`)
+    }
   };
 
   useEffect(() => {
@@ -111,12 +116,22 @@ const GroupList = () => {
 
     // make api call to yelp and get back list of 7 restaurant objects
     let restaurants_from_yelp = await getRestaurantFromInfo(avgLat,avgLon,finalCravings)
-    console.log("here", restaurants_from_yelp)
+
     // make api call to Mongo and save the 7 restaurant objects
-
-    // api call to set isFinal to true
-
-    // navigate to GroupResult
+    // and api call to set isFinal to true
+    const restaurantsToMongo = await fetch(
+      `${process.env.REACT_APP_API_HOST}/api/finalize_restaurants/${id}`,
+      {
+        method: "put",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ finalRestaurants: restaurants_from_yelp, finalCravings: finalCravings }),
+      })
+    if (!restaurantsToMongo) {
+      throw new Error("Could not add final restaurants to group DB")
+    } else {
+      // navigate to GroupResult
+      navigate(`/group/${id}/results`)
+    }
   }
 
   // for testing we're using group 63e6d45c982202426c98cc09

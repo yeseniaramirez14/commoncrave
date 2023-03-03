@@ -50,6 +50,14 @@ const groupSchema = new Schema({
         type: Number
       }
     }
+  ],
+  restaurant_idx: {
+    type: Number
+  },
+  final_cravings: [
+    {
+      type: String
+    }
   ]
 });
 
