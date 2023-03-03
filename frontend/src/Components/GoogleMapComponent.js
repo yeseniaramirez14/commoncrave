@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 const GoogleMapComponent = (props) => {
     const containerStyle = {
-        width: '400px',
-        height: '400px'
+        width: '600px',
+        height: '500px'
     }
 
     const center = {
