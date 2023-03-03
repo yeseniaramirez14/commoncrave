@@ -86,8 +86,8 @@ router.get("/group/:id/users", async (req, res) => {
       let user = await User.findById(member).exec();
       users.push(user);
     }
-    res.status(200).json({ users: users });
-    return users;
+    res.status(200).json({ users: users, isFinal: group.isFinal });
+    return { users: users, isFinal: group.isFinal };
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -112,22 +112,6 @@ router.put("/group/:id", async (req, res) => {
   }
 });
 
-// Finalize Group (PUT)
-router.put("/finalize_group/:id", async (req, res) => {
-  try {
-    const group = await Group.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        isFinal: true,
-      },
-      { returnDocument: "after", runValidators: true }
-    );
-    res.status(200).json({ group: group });
-    return group;
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
 
 // Delete Group by ID (DEL)
 router.delete("/group/:id", async (req, res) => {
@@ -148,6 +132,45 @@ router.delete("/user/:id", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+// Add list of restaurants to group
+router.put("/finalize_restaurants/:id", async (req, res) => {
+  try {
+    const group = await Group.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        finalRestaurants: req.body.finalRestaurants,
+        final_cravings: req.body.finalCravings,
+        restaurant_idx: 0,
+        isFinal: true
+      },
+      { returnDocument: "after", runValidators: true }
+    );
+    res.status(200).json({ group:group });
+    return group;
+  } catch (error) {
+    res.status(400).json({message: error.message })
+  }
+
+})
+
+// update the restaurant IDX
+router.put("/updateidx/:id", async (req, res) => {
+  try {
+    const group = await Group.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        restaurant_idx: req.body.idx,
+      },
+      { returnDocument: "after", runValidators: true }
+    );
+    res.status(200).json({ group:group });
+    return group;
+  } catch (error) {
+    res.status(400).json({message: error.message })
+  }
+
+})
 
 // takes latitude, longitude, and a restaurant name and returns the alias's
 // of that restaurant
