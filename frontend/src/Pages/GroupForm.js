@@ -6,6 +6,7 @@ import Modal from "../Components/Modal";
 import { setIsNewGroupFalse } from "../Redux/homeSlice";
 import { setLat, setLon } from "../Redux/userSlice";
 import { setModalCravings } from "../Redux/cravingsModalSlice";
+import cravingsData from "../cravingsData.json"
 
 const GroupForm = (props) => {
   const dispatch = useDispatch();
@@ -165,7 +166,9 @@ const GroupForm = (props) => {
         throw new Error("Could not join group");
       }
     }
+
   };
+  console.log(cravings)
 
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
@@ -282,10 +285,13 @@ const GroupForm = (props) => {
             </label>
           </div>
         </div>
-        <div className="flex justify-center flex-wrap -mx-3 mb-6">
-          <div className="w-half px-3">
-            <label htmlFor="cravings" className="max-w-sm">
-              Cravings: {checkedCravings} <br></br>{" "}
+        <div className="flex justify-center flex-col items-center mb-6">
+          <div className="px-3 flex flex-col items-center">
+            <div>
+              Cravings:
+            </div>
+            <label htmlFor="cravings" className="max-w-sm flex flex-col items-center">
+              {cravings.map((craving,index) => {return(<span key={index}>{cravingsData[craving]}{index < cravings.length - 1 ? ",\u00A0": ""}</span>)})} {cravingsData[checkedCravings]} <br></br>{" "}
             </label>
             {address.length >= 5 || isLocated === true ? (
               <button
@@ -302,7 +308,7 @@ const GroupForm = (props) => {
                 Select Cravings
               </button>
             ) : (
-              <div className="cravingsButton flex flex-wrap justify-center">
+              <div className="cravingsButton flex flex-col justify-center">
                 <button
                   disabled
                   type="button"
