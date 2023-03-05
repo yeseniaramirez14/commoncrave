@@ -13,7 +13,6 @@ module.exports = {
     const geocoder = NodeGeocoder(options);
 
     const res = await geocoder.geocode(address);
-    console.log("res", res);
     const lat = res[0]["latitude"];
     const lon = res[0]["longitude"];
     // return res
@@ -46,4 +45,4 @@ module.exports = {
   },
 };
 
-// console.log("where are we going to meet up", get_average_lat_lon([[33.9565899, -117.9110073], [30.1457001, -97.79002369999999]]))
+// .log("where are we going to meet up", get_average_lat_lon([[33.9565899, -117.9110073], [30.1457001, -97.79002369999999]]))
