@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const routes = require("./routes/routes");
+const path = require("path");
 dotenv.config();
 
 const app = express();
@@ -31,3 +32,8 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+app.use(express.static("client/build"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
