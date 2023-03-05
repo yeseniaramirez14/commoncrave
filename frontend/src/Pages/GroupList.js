@@ -19,10 +19,9 @@ const GroupList = () => {
       throw new Error("Could not fetch all users");
     }
     let data = await res.json();
-    console.log("data ", data)
     setUsers(data.users);
-    if (data.isFinal === true){
-      navigate(`/group/${id}/results`)
+    if (data.isFinal === true) {
+      navigate(`/group/${id}/results`);
     }
   };
 
@@ -54,68 +53,72 @@ const GroupList = () => {
         maxAliases.push(alias);
       }
     }
-    return maxAliases
-  };
+    return maxAliases;
+  }
 
   const getRestaurantFromInfo = async (lat, lon, categories) => {
     const data = await fetch(
       `${process.env.REACT_APP_API_HOST}/api/alias_to_restaurant`,
-        {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-              lat: lat, 
-              lon: lon, 
-              category: categories 
-          }),
-        }
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lat: lat,
+          lon: lon,
+          category: categories,
+        }),
+      }
     );
     if (!data.ok) {
-      throw new Error("Could not get restaurant from lat/lon/categories")
+      throw new Error("Could not get restaurant from lat/lon/categories");
     }
     let restaurantInfo = await data.json();
-    let filtered_restuarant_data = restaurantInfo.data.businesses.map(obj => (
-      {
-        name: obj.name, 
+    let filtered_restuarant_data = restaurantInfo.data.businesses.map(
+      (obj) => ({
+        name: obj.name,
         coordinates: {
-          latitude: obj.coordinates.latitude, 
-          longitude: obj.coordinates.longitude
-        }, 
-        url: obj.url, 
+          latitude: obj.coordinates.latitude,
+          longitude: obj.coordinates.longitude,
+        },
+        url: obj.url,
         location: {
-          display_address: obj.location.display_address
-        }, 
-        price: obj.price, 
-        rating: obj.rating
-      }
-      ))
-    return filtered_restuarant_data
-  }
+          display_address: obj.location.display_address,
+        },
+        price: obj.price,
+        rating: obj.rating,
+      })
+    );
+    return filtered_restuarant_data;
+  };
 
   const getResultsOnClick = async () => {
     // assemble group info
-    let cravingsDict = {}
-    let latSum = 0
-    let lonSum = 0
-    let totalUsers = users.length
-    for (let user of users){
-      latSum += user.lat 
-      lonSum += user.lon 
-      let userCravings = user.cravings 
-      for(let craving of userCravings){
+    let cravingsDict = {};
+    let latSum = 0;
+    let lonSum = 0;
+    let totalUsers = users.length;
+    for (let user of users) {
+      latSum += user.lat;
+      lonSum += user.lon;
+      let userCravings = user.cravings;
+      for (let craving of userCravings) {
         if (craving in cravingsDict) {
-          cravingsDict[craving] ++
+          cravingsDict[craving]++;
         } else {
-          cravingsDict[craving] = 1
+          cravingsDict[craving] = 1;
         }
-      };
-    };
-    let avgLat = latSum/totalUsers
-    let avgLon = lonSum/totalUsers
-    let finalCravings = finalCategory(cravingsDict)
+      }
+    }
+    let avgLat = latSum / totalUsers;
+    let avgLon = lonSum / totalUsers;
+    let finalCravings = finalCategory(cravingsDict);
 
     // make api call to yelp and get back list of 7 restaurant objects
-    let restaurants_from_yelp = await getRestaurantFromInfo(avgLat,avgLon,finalCravings)
+    let restaurants_from_yelp = await getRestaurantFromInfo(
+      avgLat,
+      avgLon,
+      finalCravings
+    );
 
     // make api call to Mongo and save the 7 restaurant objects
     // and api call to set isFinal to true
@@ -124,15 +127,19 @@ const GroupList = () => {
       {
         method: "put",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ finalRestaurants: restaurants_from_yelp, finalCravings: finalCravings }),
-      })
+        body: JSON.stringify({
+          finalRestaurants: restaurants_from_yelp,
+          finalCravings: finalCravings,
+        }),
+      }
+    );
     if (!restaurantsToMongo) {
-      throw new Error("Could not add final restaurants to group DB")
+      throw new Error("Could not add final restaurants to group DB");
     } else {
       // navigate to GroupResult
-      navigate(`/group/${id}/results`)
+      navigate(`/group/${id}/results`);
     }
-  }
+  };
 
   // for testing we're using group 63e6d45c982202426c98cc09
 
@@ -147,9 +154,14 @@ const GroupList = () => {
           <>
             <div className="h-screen flex flex-col items-center font-worksans bg-yellow">
               {isNewGroup ? (
-                <div className="text-2xl mt-5 h-10 flex flex-row items-center"> You have successfully created a new group!</div>
+                <div className="text-2xl mt-5 h-10 flex flex-row items-center">
+                  {" "}
+                  You have successfully created a new group!
+                </div>
               ) : (
-                <div className="text-2xl mt-5 h-10 flex flex-row items-center">You have successfully joined group {id}</div>
+                <div className="text-2xl mt-5 h-10 flex flex-row items-center">
+                  You have successfully joined group {id}
+                </div>
               )}
               <div className="flex flex-col items-center justify-center mt-5">
                 <h1 className="text-3xl font-bold">
@@ -167,21 +179,31 @@ const GroupList = () => {
                 </div>
               </div>
               <div className="mt-20 border rounded-lg bg-white w-1/2 h-1/2 flex flex-col items-center">
-                <h1 className="text-3xl font-semibold m-5">Friends that have joined</h1>
+                <h1 className="text-3xl font-semibold m-5">
+                  Friends that have joined
+                </h1>
                 {users.map((user) => {
                   return (
-                    <p key={users.indexOf(user) + 1} className="text-xl font-normal">
+                    <p
+                      key={users.indexOf(user) + 1}
+                      className="text-xl font-normal"
+                    >
                       {users.indexOf(user) + 1}. {user.name}
                     </p>
                   );
                 })}
               </div>
               {/* add !isNewGroup */}
-              {console.log("clear me when done bottom on grouplist")}
-              {isNewGroup ? (
-                <div className="mt-20 text-2xl"> Waiting on group leader to get results </div>
+              {!isNewGroup ? (
+                <div className="m-20 text-2xl">
+                  {" "}
+                  Waiting on group leader to get results{" "}
+                </div>
               ) : (
-                <button onClick={()=>getResultsOnClick()} className="mt-20 w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
+                <button
+                  onClick={() => getResultsOnClick()}
+                  className="m-20 w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center"
+                >
                   Get Results
                 </button>
               )}

@@ -6,7 +6,7 @@ import Modal from "../Components/Modal";
 import { setIsNewGroupFalse } from "../Redux/homeSlice";
 import { setLat, setLon } from "../Redux/userSlice";
 import { setModalCravings } from "../Redux/cravingsModalSlice";
-import cravingsData from "../cravingsData.json"
+import cravingsData from "../cravingsData.json";
 
 const GroupForm = (props) => {
   const dispatch = useDispatch();
@@ -135,13 +135,11 @@ const GroupForm = (props) => {
       if (groupRes.status === 200) {
         const group = await groupRes.json();
         const groupId = group["_id"];
-        console.log("group info here", groupId);
         navigate(`/group/${groupId}`);
       } else {
         throw new Error("Could not create group");
       }
     } else {
-      console.log("joining new group");
       // patch request with GroupID, Name, Location, Cravings
       const userId = user["_id"];
       let groupRes = await fetch(
@@ -166,9 +164,7 @@ const GroupForm = (props) => {
         throw new Error("Could not join group");
       }
     }
-
   };
-  console.log(cravings)
 
   return (
     <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
@@ -287,11 +283,20 @@ const GroupForm = (props) => {
         </div>
         <div className="flex justify-center flex-col items-center mb-6">
           <div className="px-3 flex flex-col items-center">
-            <div>
-              Cravings:
-            </div>
-            <label htmlFor="cravings" className="max-w-sm flex flex-col items-center">
-              {cravings.map((craving,index) => {return(<span key={index}>{cravingsData[craving]}{index < cravings.length - 1 ? ",\u00A0": ""}</span>)})} {cravingsData[checkedCravings]} <br></br>{" "}
+            <div>Cravings:</div>
+            <label
+              htmlFor="cravings"
+              className="max-w-sm flex flex-col items-center"
+            >
+              {cravings.map((craving, index) => {
+                return (
+                  <span key={index}>
+                    {cravingsData[craving]}
+                    {index < cravings.length - 1 ? ",\u00A0" : ""}
+                  </span>
+                );
+              })}{" "}
+              {cravingsData[checkedCravings]} <br></br>{" "}
             </label>
             {address.length >= 5 || isLocated === true ? (
               <button

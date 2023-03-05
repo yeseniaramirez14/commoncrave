@@ -12,7 +12,6 @@ const JoinGroupFromUrlForm = () => {
   }, []);
 
   const isFinalGroup = async (groupId) => {
-    console.log("this is the group ID:", groupId);
     const groupRes = await fetch(
       `${process.env.REACT_APP_API_HOST}/api/group/${groupId}`,
       {
