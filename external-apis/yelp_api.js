@@ -38,30 +38,30 @@ module.exports = {
   // takes latitude, longitude, and an alias to search for
   // restuarants within a 5 mile radius
   search_business_by_alias: async (lat, lon, category) => {
-    let category_field = ""
+    let category_field = "";
     if (category.length === 1) {
-      category_field = "categories=" + category[0] + "&"
+      category_field = "categories=" + category[0] + "&";
     } else {
       for (let craving of category) {
-        category_field += "categories=" + craving + "&"
+        category_field += "categories=" + craving + "&";
       }
     }
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${process.env.YELP_API_KEY}`
-      }
+        accept: "application/json",
+        Authorization: `Bearer ${process.env.YELP_API_KEY}`,
+      },
     };
-    try{
-      let res = await fetch(`https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lon}&${category_field}sort_by=best_match&limit=7`, options)
+    try {
+      let res = await fetch(
+        `https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lon}&${category_field}sort_by=best_match&limit=7`,
+        options
+      );
       let data = await res.json();
-      return data
+      return data;
     } catch (error) {
-      console.error(err)
+      console.error(err);
     }
   },
 };
-
-// get_alias_from_restuarant(91748, 'Myungrang')
-// search_business_by_alias(33.9565899, -117.9110073, ["japanese"]);

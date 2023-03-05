@@ -21,7 +21,6 @@ const get_alias_from_restaurant = async (lat, lon, restaurant_name) => {
       for (let alia of alias) {
         output.push(alia["alias"]);
       }
-      console.log("output", output);
       return output;
     })
     .catch((err) => console.log(err));
