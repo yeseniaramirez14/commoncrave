@@ -147,29 +147,30 @@ const GroupList = () => {
           <>
             <div className="h-screen flex flex-col items-center font-worksans bg-yellow">
               {isNewGroup ? (
-                <div> You have successfully created a new group!</div>
+                <div className="text-2xl mt-5 h-10 flex flex-row items-center"> You have successfully created a new group!</div>
               ) : (
-                <div>You have successfully joined group {id}</div>
+                <div className="text-2xl mt-5 h-10 flex flex-row items-center">You have successfully joined group {id}</div>
               )}
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center mt-5">
                 <h1 className="text-3xl font-bold">
                   Add friends to your group!
                 </h1>
-                <div className="flex flex-row">
+                <div className="flex flex-row border rounded-lg mt-5">
                   <button onClick={() => copyText()}>
                     <img className="scale-50" src={copyIcon} alt="copy text" />
                   </button>
                   <input
                     type="text"
+                    className="w-80"
                     value={`${process.env.REACT_APP_HOST}/joingroup/${id}`}
                   ></input>
                 </div>
               </div>
-              <div>
-                <h1>Friends that have joined</h1>
+              <div className="mt-20 border rounded-lg bg-white w-1/2 h-1/2 flex flex-col items-center">
+                <h1 className="text-3xl font-semibold m-5">Friends that have joined</h1>
                 {users.map((user) => {
                   return (
-                    <p key={users.indexOf(user) + 1}>
+                    <p key={users.indexOf(user) + 1} className="text-xl font-normal">
                       {users.indexOf(user) + 1}. {user.name}
                     </p>
                   );
@@ -178,9 +179,9 @@ const GroupList = () => {
               {/* add !isNewGroup */}
               {console.log("clear me when done bottom on grouplist")}
               {isNewGroup ? (
-                <div> Waiting on group leader to get results </div>
+                <div className="mt-20 text-2xl"> Waiting on group leader to get results </div>
               ) : (
-                <button onClick={()=>getResultsOnClick()} className="w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
+                <button onClick={()=>getResultsOnClick()} className="mt-20 w-50 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center">
                   Get Results
                 </button>
               )}
