@@ -18,19 +18,3 @@ module.exports = function finalCategory(alias_dictionary) {
     return maxAliases[Math.floor(Math.random() * maxAliases.length)];
   }
 };
-
-// const ex_dict = {
-//     "mexican": 3,
-//     "japanese": 3,
-//     "american": 4,
-//     "italian": 2
-// }
-
-// const ex_dict2 = {
-//     "hamburger": 1,
-//     "hotdog": 1,
-//     "bars/cocktail": 1
-// }
-
-// console.log(finalCategory(ex_dict))
-// console.log(finalCategory(ex_dict2))

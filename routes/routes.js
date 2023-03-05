@@ -5,7 +5,10 @@ const cors = require("cors");
 const User = require("../collections/user");
 const Group = require("../collections/group");
 const { getLatLongFromAddress } = require("../external-apis/geocoder");
-const { get_alias_from_restaurant, search_business_by_alias } = require("../external-apis/yelp_api");
+const {
+  get_alias_from_restaurant,
+  search_business_by_alias,
+} = require("../external-apis/yelp_api");
 
 // Create User (POST)
 router.post("/user", async (req, res) => {
@@ -38,8 +41,6 @@ router.get("/user", async (req, res) => {
 // Create Group (POST)
 router.post("/group", async (req, res) => {
   const user = await User.findById(req.body.owner_id).exec();
-
-  console.log("user:", user);
 
   const data = new Group({
     name: req.body.name,
@@ -112,7 +113,6 @@ router.put("/group/:id", async (req, res) => {
   }
 });
 
-
 // Delete Group by ID (DEL)
 router.delete("/group/:id", async (req, res) => {
   try {
@@ -142,17 +142,16 @@ router.put("/finalize_restaurants/:id", async (req, res) => {
         finalRestaurants: req.body.finalRestaurants,
         final_cravings: req.body.finalCravings,
         restaurant_idx: 0,
-        isFinal: true
+        isFinal: true,
       },
       { returnDocument: "after", runValidators: true }
     );
-    res.status(200).json({ group:group });
+    res.status(200).json({ group: group });
     return group;
   } catch (error) {
-    res.status(400).json({message: error.message })
+    res.status(400).json({ message: error.message });
   }
-
-})
+});
 
 // update the restaurant IDX
 router.put("/updateidx/:id", async (req, res) => {
@@ -164,13 +163,12 @@ router.put("/updateidx/:id", async (req, res) => {
       },
       { returnDocument: "after", runValidators: true }
     );
-    res.status(200).json({ group:group });
+    res.status(200).json({ group: group });
     return group;
   } catch (error) {
-    res.status(400).json({message: error.message })
+    res.status(400).json({ message: error.message });
   }
-
-})
+});
 
 // takes latitude, longitude, and a restaurant name and returns the alias's
 // of that restaurant
@@ -204,10 +202,10 @@ router.post("/alias_to_restaurant", async (req, res) => {
       req.body.lon,
       req.body.category
     );
-    res.status(200).json({data: data});
-  } catch(error) {
-    res.status(400).json({message: error.message});
+    res.status(200).json({ data: data });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
-})
+});
 
 module.exports = router;

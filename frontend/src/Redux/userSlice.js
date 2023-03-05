@@ -22,7 +22,6 @@ export const userSlice = createSlice({
         // pass
       } else {
         for (let craving of action.payload) {
-          console.log("what is the craving", craving);
           state.cravings.push(craving);
         }
       }
