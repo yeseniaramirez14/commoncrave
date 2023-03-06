@@ -1,13 +1,14 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const routes = require("./routes/routes");
-const path = require("path");
 dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 9000;
 
 app.use(
   cors({
@@ -18,6 +19,12 @@ app.use(
 app.use(bodyParser.json());
 app.use("/api", routes);
 
+app.use(express.static(path.join(__dirname, "frontend", "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+});
+
 mongoose.set("strictQuery", false);
 
 mongoose
@@ -25,15 +32,10 @@ mongoose
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@commoncrave.yzy4afb.mongodb.net/?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(9000, () => {
-      console.log("Server running at http://localhost:9000");
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
     });
   })
   .catch((err) => {
     console.log(err);
   });
-
-app.use(express.static("client/build"));
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-});
