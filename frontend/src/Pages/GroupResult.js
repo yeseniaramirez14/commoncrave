@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import GoogleMapComponent from "../Components/GoogleMapComponent";
 import cravingsData from "../cravingsData.json";
@@ -10,6 +11,7 @@ const GroupResult = () => {
   const [finalGroup, setFinalGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const fetchedRef = useRef(false);
+  const isNewGroup = useSelector((state) => state.home.isNewGroup);
 
   useEffect(() => {
     // make sure useEffect only runs once on page load
@@ -109,12 +111,16 @@ const GroupResult = () => {
             {finalGroup.finalRestaurants[finalGroup.restaurant_idx]["name"]}
           </a>
         </div>
-        <button
-          onClick={tryAgainOnClick}
-          className="w-50 mb-10 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center"
-        >
-          Try Again
-        </button>
+        {isNewGroup ? (
+          <button
+            onClick={tryAgainOnClick}
+            className="w-50 mb-10 bg-white tracking-wide text-green font-bold rounded border-b-2 border-green hover:border-green hover:bg-light-pink hover:text-green shadow-md py-2 px-6 inline-flex items-center"
+          >
+            Try Again
+          </button>
+        ) : (
+          <div></div>
+        )}
       </div>
     </>
   );
