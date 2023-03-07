@@ -12,16 +12,23 @@ const AboutUs = () => {
       </h1>
       <div className="border border-solid rounded-2xl p-5 mt-2 m-10 border-green border-2">
         <p className="text-center">
-          Chocolate cake fruitcake gingerbread gingerbread pie cotton candy
-          soufflé muffin. Toffee cheesecake jelly beans pastry lemon drops
-          soufflé. Jelly beans cookie lemon drops topping chocolate cake wafer
-          cookie. Ice cream jelly-o shortbread cake lollipop sweet cupcake.{" "}
+          Welcome to our restaurant recommendation website! We are two driven
+          and passionate junior software engineers who met at a coding bootcamp
+          and decided to combine our love for food and technology by creating
+          this platform. Our mission is to simplify the process of finding the
+          perfect restaurant for you and your friends.{" "}
         </p>
         <p className="text-center pt-2">
           {" "}
-          Powder biscuit soufflé chocolate cake chocolate chupa chups gummies
-          powder. Toffee muffin tart sesame snaps gingerbread candy canes
-          cheesecake. Cheesecake soufflé pudding jelly tart.
+          With our website, you and your friends can create a group and input
+          your location and cravings, and we will provide a list of restaurants
+          that cater to your taste buds. Our algorithm will then recommend the
+          perfect spot that's in the midpoint of everyone in the group. We
+          understand the frustration of going back and forth trying to decide on
+          a restaurant, which is why we created this website to make the
+          decision-making process more efficient and enjoyable. We're excited to
+          continue improving and expanding our website, and we hope you enjoy
+          using it as much as we enjoyed creating it!
         </p>
       </div>
       <div className="grid grid-cols-2 p-5 m-10">
@@ -35,13 +42,24 @@ const AboutUs = () => {
             ></img>
           </div>
           <div className="flex justify-evenly p-5">
-            <button type="button" onClick={()=>window.open("https://github.com/theandrewliu")}>
+            <button
+              type="button"
+              onClick={() => window.open("https://github.com/theandrewliu")}
+            >
               <img className="w-10" src={Github} alt="github icon" />
             </button>
-            <button type="button" onClick={()=>window.open("https://www.linkedin.com/in/theandrewliu/")}>
+            <button
+              type="button"
+              onClick={() =>
+                window.open("https://www.linkedin.com/in/theandrewliu/")
+              }
+            >
               <img className="w-10" src={LinkedIn} alt="linkedin icon" />
             </button>
-            <button type="button" onClick={()=>window.open("https://andrewliu.app")}>
+            <button
+              type="button"
+              onClick={() => window.open("https://andrewliu.app")}
+            >
               <img className="w-9" src={Portfolio} alt="portfolio icon" />
             </button>
           </div>
@@ -57,13 +75,24 @@ const AboutUs = () => {
             ></img>
           </div>
           <div className="flex justify-evenly p-5">
-            <button type="button" onClick={()=>window.open("https://github.com/yeseniaramirez14")}>
+            <button
+              type="button"
+              onClick={() => window.open("https://github.com/yeseniaramirez14")}
+            >
               <img className="w-10" src={Github} alt="github icon" />
             </button>
-            <button type="button" onClick={()=>window.open("https://www.linkedin.com/in/yeseniaramirez14/")}>
+            <button
+              type="button"
+              onClick={() =>
+                window.open("https://www.linkedin.com/in/yeseniaramirez14/")
+              }
+            >
               <img className="w-10" src={LinkedIn} alt="linkedin icon" />
             </button>
-            <button type="button" onClick={()=>window.open("https://yeseniar.dev/")}>
+            <button
+              type="button"
+              onClick={() => window.open("https://yeseniar.dev/")}
+            >
               <img className="w-9" src={Portfolio} alt="portfolio icon" />
             </button>
           </div>
