@@ -133,3 +133,5 @@ dist
 
 .DS_Store
 *.pem
+.pem
+commoncrave-app.pem
