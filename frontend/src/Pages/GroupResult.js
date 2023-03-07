@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PacmanLoader from "react-spinners/PacmanLoader";
@@ -10,15 +10,16 @@ const GroupResult = () => {
   const { id } = useParams();
   const [finalGroup, setFinalGroup] = useState(null);
   const [loading, setLoading] = useState(true);
-  const fetchedRef = useRef(false);
   const isNewGroup = useSelector((state) => state.home.isNewGroup);
 
   useEffect(() => {
-    // make sure useEffect only runs once on page load
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
-    getFinalRestaurants();
-    setLoading(false);
+    const interval = setInterval(() => {
+      getFinalRestaurants();
+      setLoading(false);
+    }, 5000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const getFinalRestaurants = async () => {
