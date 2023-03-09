@@ -23,42 +23,46 @@ const groupSchema = new Schema({
   finalRestaurants: [
     {
       name: {
-        type: String
+        type: String,
       },
       coordinates: {
         latitude: {
-          type: Number
+          type: Number,
         },
         longitude: {
-          type: Number
-        }
+          type: Number,
+        },
       },
       url: {
-        type: String
+        type: String,
       },
       location: {
         display_address: [
           {
-            type: String
-          }
-        ]
+            type: String,
+          },
+        ],
       },
       price: {
-        type: String
+        type: String,
       },
       rating: {
-        type: Number
-      }
-    }
+        type: Number,
+      },
+    },
   ],
   restaurant_idx: {
-    type: Number
+    type: Number,
   },
   final_cravings: [
     {
-      type: String
-    }
-  ]
+      type: String,
+    },
+  ],
+  createdAt: {
+    type: Date,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Group", groupSchema);
