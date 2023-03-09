@@ -3,13 +3,11 @@
 <h2 align="center"> by Andrew Liu and Yesenia Ramirez</h2>
 
 <p align="center">Common Crave is a unique restaurant recommendation website designed to help friends find a restaurant that meets their shared cravings. With Common Crave, users can create groups with their friends and select the type of cuisine they desire. The website then suggests restaurants located at the midpoint of everyone in the group. This feature allows friends to explore new dining experiences while accommodating everyone's location. </p> 
+
 <br>
 <hr>
-<br>
+<h2 align="center"><b>✨&nbsp;Common Crave is accessible at <a href="https://commoncrave.com" target="_blank" rel="noreferrer">www.commoncrave.com</a>&nbsp;✨</b></h2>
 
-<h2 align="center"><b>✨&nbsp;Common Crave is accessible at <a href="https://commoncrave.com" target="_blank" rel="noreferrer">www.commoncrave.com/</a>&nbsp;✨</b></h2>
-
-<br>
 <hr>
 <br>
 
