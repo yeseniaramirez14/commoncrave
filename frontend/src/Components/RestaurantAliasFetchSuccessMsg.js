@@ -2,7 +2,7 @@ const RestaurantAliasFetchSuccessMsg = ({ restaurantAliases }) => {
   return (
     <div
       className={
-        "absolute bottom-1/2 left-1/3 bg-light-pink border-2 text-black px-4 py-3"
+        "absolute bottom-1/2 left-1/3 bg-light-pink border-2 text-green px-4 py-3"
       }
       role="alert"
     >

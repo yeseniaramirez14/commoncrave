@@ -147,19 +147,19 @@ const GroupList = () => {
     <>
       <div>
         {loading ? (
-          <div className="flex items-center justify-center h-screen bg-yellow">
-            <PacmanLoader />
+          <div className="flex items-center justify-center min-h-screen bg-yellow">
+            <PacmanLoader color={"#41584B"} />
           </div>
         ) : (
           <>
-            <div className="h-screen flex flex-col items-center font-worksans bg-yellow">
+            <div className="min-h-screen flex flex-col items-center font-worksans bg-yellow">
               {isNewGroup ? (
-                <div className="text-2xl mt-5 h-10 flex flex-row items-center">
+                <div className="text-2xl text-green mt-5 h-10 flex flex-row items-center">
                   {" "}
                   You have successfully created a new group!
                 </div>
               ) : (
-                <div className="text-2xl mt-5 h-10 flex flex-row items-center">
+                <div className="text-2xl text-green mt-5 h-10 flex flex-row items-center">
                   You have successfully joined group {id}
                 </div>
               )}
@@ -167,13 +167,20 @@ const GroupList = () => {
                 <h1 className="text-3xl font-bold">
                   Add friends to your group!
                 </h1>
-                <div className="flex flex-row border rounded-lg mt-5">
-                  <button onClick={() => copyText()}>
-                    <img className="scale-50" src={copyIcon} alt="copy text" />
+                <div className="flex flex-row border border-green rounded-lg mt-5">
+                  <button
+                    className="bg-green rounded-l-lg"
+                    onClick={() => copyText()}
+                  >
+                    <img
+                      className="scale-50 bg-green"
+                      src={copyIcon}
+                      alt="copy text"
+                    />
                   </button>
                   <input
                     type="text"
-                    className="w-80"
+                    className="w-80 text-green rounded-r-lg"
                     value={`${process.env.REACT_APP_HOST}/joingroup/${id}`}
                   ></input>
                 </div>
@@ -186,14 +193,13 @@ const GroupList = () => {
                   return (
                     <p
                       key={users.indexOf(user) + 1}
-                      className="text-xl font-normal"
+                      className="text-xl font-normal text-green"
                     >
                       {users.indexOf(user) + 1}. {user.name}
                     </p>
                   );
                 })}
               </div>
-              {/* add !isNewGroup */}
               {!isNewGroup ? (
                 <div className="m-20 text-2xl">
                   {" "}

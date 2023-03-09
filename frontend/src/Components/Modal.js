@@ -94,7 +94,7 @@ const Modal = ({ open, onClose }) => {
                 I'm craving a specific restaurant's type of food
               </p>
               <input
-                className="appearance-none block w-full bg-white text-black border border-green rounded p-2 mb-3 leading-tight focus:outline-none focus:bg-white"
+                className="appearance-none block w-full bg-white text-green border border-green rounded p-2 mb-3 leading-tight focus:outline-none focus:bg-white"
                 type="text"
                 value={restaurant}
                 placeholder="Restaurant name"
@@ -136,7 +136,7 @@ const Modal = ({ open, onClose }) => {
           </div>
         </div>
       </div>
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-green"></div>
     </>,
     document.getElementById("modal")
   );

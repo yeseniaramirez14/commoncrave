@@ -24,11 +24,11 @@ const CravingsCheckBox = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 overflow-y-scroll h-40 border rounded border-black p-2">
+      <div className="grid grid-cols-3 overflow-y-scroll h-40 border rounded border-green p-2">
         {Object.entries(cravingsData).map(([alias, craving]) => (
           <div key={alias} className="form-check form-check-inline">
             <input
-              className="form-check-input appearance-none h-4 w-4 border border-black rounded-sm bg-white checked:bg-pink checked:border-green focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+              className="form-check-input appearance-none h-4 w-4 border border-green rounded-sm bg-white checked:bg-pink checked:border-green focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
               type="checkbox"
               id={alias}
               value={alias}
@@ -36,7 +36,7 @@ const CravingsCheckBox = () => {
               onChange={handleCheckboxChange}
             />
             <label
-              className="form-check-label inline-block text-black text-sm"
+              className="form-check-label inline-block text-green text-sm"
               htmlFor={alias}
             >
               {craving}

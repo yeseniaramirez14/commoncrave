@@ -179,7 +179,7 @@ const GroupForm = (props) => {
   };
 
   return (
-    <div className="h-screen justify-center font-worksans bg-yellow flex-col items-center">
+    <div className="min-h-screen justify-center font-worksans bg-yellow flex-col items-center">
       <h1 className="text-center pt-10 font-bold text-3xl">
         {isNewGroup ? "Start Group" : "Join Group"}
       </h1>
@@ -188,7 +188,7 @@ const GroupForm = (props) => {
           <div className="w-half px-3">
             {isNewGroup ? (
               <label
-                className="block tracking-wide text-black font-bold mb-2"
+                className="block tracking-wide font-bold mb-2"
                 htmlFor="groupName"
               >
                 Group Name
@@ -199,7 +199,7 @@ const GroupForm = (props) => {
                   onChange={(e) => {
                     setGroupName(e.target.value);
                   }}
-                  className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  className="appearance-none block w-full bg-white text-green border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   placeholder="Group Name"
                   required
@@ -207,7 +207,7 @@ const GroupForm = (props) => {
               </label>
             ) : (
               <label
-                className="block tracking-wide text-black font-bold mb-2"
+                className="block tracking-wide font-bold mb-2"
                 htmlFor="groupId"
               >
                 Group ID
@@ -219,7 +219,7 @@ const GroupForm = (props) => {
                   onChange={(e) => {
                     setGroupId(e.target.value);
                   }}
-                  className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  className="appearance-none block w-full bg-white text-green border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   placeholder="Group ID"
                   required
@@ -231,7 +231,7 @@ const GroupForm = (props) => {
         <div className="flex justify-center flex-wrap -mx-3 mb-6">
           <div className="w-half px-3">
             <label
-              className="block tracking-wide text-black font-bold mb-2"
+              className="block tracking-wide font-bold mb-2"
               htmlFor="name"
             >
               Name
@@ -242,7 +242,7 @@ const GroupForm = (props) => {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                className="appearance-none block w-full bg-white text-green border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                 type="text"
                 placeholder="Name"
                 required
@@ -252,10 +252,7 @@ const GroupForm = (props) => {
         </div>
         <div className="flex justify-center flex-wrap -mx-3">
           <div className="w-half px-3">
-            <label
-              className="block tracking-wide text-black font-bold"
-              htmlFor="address"
-            >
+            <label className="block tracking-wide font-bold" htmlFor="address">
               Address
               {isLocated ? (
                 <input
@@ -266,7 +263,7 @@ const GroupForm = (props) => {
                   onChange={(e) => {
                     setAddress(e.target.value);
                   }}
-                  className="appearance-none block w-full bg-white text-black border border-green rounded py-3 mb-12 px-4 leading-tight focus:outline-none focus:bg-white"
+                  className="appearance-none block w-full bg-white text-green border border-green rounded py-3 mb-12 px-4 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   placeholder="Address"
                   required
@@ -280,14 +277,14 @@ const GroupForm = (props) => {
                     onChange={(e) => {
                       setAddress(e.target.value);
                     }}
-                    className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                    className="appearance-none block w-full bg-white text-green border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                     type="text"
                     placeholder="Address"
                     required
                   />{" "}
                   <button
                     type="button"
-                    className="mb-6 hover:text-pink"
+                    className="mb-6 hover:text-pink text-green"
                     id="location"
                     onClick={getLocation}
                   >
@@ -300,10 +297,10 @@ const GroupForm = (props) => {
         </div>
         <div className="flex justify-center flex-col items-center mb-6">
           <div className="px-3 flex flex-col items-center">
-            <div>Cravings:</div>
+            <div className="font-bold">Cravings:</div>
             <label
               htmlFor="cravings"
-              className="max-w-sm flex flex-col items-center"
+              className="max-w-sm flex flex-col text-green text-sm items-center"
             >
               {cravings.map((craving, index) => {
                 return (
@@ -348,22 +345,6 @@ const GroupForm = (props) => {
           </div>
         </div>
         <div className="flex justify-center">
-          {/* {cravings.length === 0 ? (
-            <div className="submitButton flex flex-col justify-center">
-              <button
-                disabled
-                type="button"
-                className="shadow bg-grey focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                data-bs-toggle="tooltip"
-                title="Disabled tooltip"
-              >
-                {isNewGroup ? "Create" : "Join"}
-              </button>
-              <div className="hidden textBubble bg-dark-pink text-white py-2 px-2 rounded-full text-xs">
-                Please enter your cravings.
-              </div>
-            </div>
-          ) : ( */}
           <button
             type="submit"
             className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"

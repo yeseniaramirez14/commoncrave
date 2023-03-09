@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <div className="h-screen flex-col items-center font-worksans bg-yellow">
       <div className="flex justify-center items-end h-1/2">
-        <h1 className="text-center font-bold text-3xl">I am...</h1>
+        <h1 className="text-center font-bold text-green text-3xl">I am...</h1>
       </div>
       <div className="flex justify-center space-x-4 mt-6">
         <button

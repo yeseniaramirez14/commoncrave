@@ -27,6 +27,7 @@ const JoinGroupFromUrlForm = () => {
         navigate(`/group/${groupId}/results`);
       }
     } else {
+      navigate("/group/error");
       throw new Error("Could not join group");
     }
   };

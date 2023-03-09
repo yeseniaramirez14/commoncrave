@@ -59,20 +59,20 @@ const GroupResult = () => {
 
   if (!finalGroup) {
     return (
-      <div className="flex items-center justify-center h-screen bg-yellow">
-        <PacmanLoader />
+      <div className="flex items-center justify-center min-h-screen bg-yellow">
+        <PacmanLoader color={"#41584B"} />
       </div>
     );
   }
 
   return (
     <>
-      <div className="flex flex-col items-center h-screen bg-yellow">
-        <div className="mt-5 h-20 flex flex-row items-center text-3xl font-semibold">
+      <div className="flex flex-col items-center min-h-screen bg-yellow">
+        <div className="mt-5 h-20 flex flex-row text-green items-center text-3xl font-semibold">
           The Common Crave
           {finalGroup.final_cravings.length === 1 ? ` is...` : "s are "}
         </div>
-        <div className="h-32 flex flex-row items-center text-4xl font-bold">
+        <div className="mb-5 grid grid-cols-3 place-items-center text-4xl font-bold">
           {finalGroup.final_cravings.length === 1
             ? `${finalGroup.final_cravings[0]}`
             : finalGroup.final_cravings.map((craving, index) => {
@@ -98,10 +98,10 @@ const GroupResult = () => {
             ]["longitude"]
           }
         />
-        <div className="mt-5 h-5 flex flex-row items-center text-3xl font-semibold">
+        <div className="mt-5 h-5 text-green flex flex-row items-center text-3xl font-semibold">
           We recommend to visit:
         </div>
-        <div className="m-5 h-10 flex flex-row items-center text-3xl font-bold">
+        <div className="m-5 h-10 flex flex-row items-center">
           <a
             href={`${
               finalGroup.finalRestaurants[finalGroup.restaurant_idx]["url"]
@@ -109,7 +109,14 @@ const GroupResult = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {finalGroup.finalRestaurants[finalGroup.restaurant_idx]["name"]}
+            <p className="text-3xl font-bold text-center">
+              {finalGroup.finalRestaurants[finalGroup.restaurant_idx]["name"]}
+            </p>
+            <p className="text-sm text-green text-center">
+              (Click to navigate to{" "}
+              {finalGroup.finalRestaurants[finalGroup.restaurant_idx]["name"]}'s
+              Yelp page!)
+            </p>
           </a>
         </div>
         {isNewGroup ? (

@@ -2,6 +2,11 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+html,
+body {
+  height: 100%;
+}
+
 .cravingsButton:hover .hidden {
     display: block;
   }

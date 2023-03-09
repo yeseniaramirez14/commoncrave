@@ -6,19 +6,17 @@ import Portfolio from "../images/icons/Portfolio.png";
 
 const AboutUs = () => {
   return (
-    <div className="h-screen flex-col items-center font-worksans bg-yellow">
-      <h1 className="text-center font-bold text-3xl pt-5 pb-3 text-green">
-        About Us
-      </h1>
+    <div className="min-h-screen flex-col items-center font-worksans bg-yellow">
+      <h1 className="text-center font-bold text-3xl pt-5 pb-3">About Us</h1>
       <div className="border border-solid rounded-2xl p-5 mt-2 m-10 border-green border-2">
-        <p className="text-center">
+        <p className="text-center text-green">
           Welcome to our restaurant recommendation website! We are two driven
           and passionate junior software engineers who met at a coding bootcamp
           and decided to combine our love for food and technology by creating
           this platform. Our mission is to simplify the process of finding the
           perfect restaurant for you and your friends.{" "}
         </p>
-        <p className="text-center pt-2">
+        <p className="text-center text-green pt-2">
           {" "}
           With our website, you and your friends can create a group and input
           your location and cravings, and we will provide a list of restaurants
@@ -32,7 +30,7 @@ const AboutUs = () => {
         </p>
       </div>
       <div className="grid grid-cols-2 p-5 m-10">
-        <div className="grid-col-1 text-center text-2xl">
+        <div className="grid-col-1 text-center text-2xl pr-5 border-r-2 border-green">
           Andrew
           <div className="pb-[3px] pt-10">
             <img
@@ -64,7 +62,6 @@ const AboutUs = () => {
             </button>
           </div>
         </div>
-        <div className="h-1/2 absolute left-1/2 -ml-0.5 w-0.5 bg-green"></div>
         <div className="grid-col-2 text-center text-2xl">
           Yesenia
           <div className="pt-10">
