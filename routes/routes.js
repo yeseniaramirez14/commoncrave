@@ -18,6 +18,7 @@ router.post("/user", async (req, res) => {
       lat: req.body.lat,
       lon: req.body.lon,
       cravings: req.body.cravings,
+      createdAt: Date.now(),
     });
 
     const dataToSave = await data.save();
@@ -47,6 +48,7 @@ router.post("/group", async (req, res) => {
     owner_id: user._id,
     members: user,
     isFinal: false,
+    createdAt: Date.now(),
   });
 
   try {
