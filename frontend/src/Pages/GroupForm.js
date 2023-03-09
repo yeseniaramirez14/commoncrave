@@ -94,6 +94,17 @@ const GroupForm = (props) => {
   const handleSubmit = async (event) => {
     // post request to make new user
     event.preventDefault();
+    if (isNewGroup) {
+      if (!groupName || !name || cravings.length === 0) {
+        alert("Please fill in all required fields");
+        return;
+      }
+    } else {
+      if (!groupId || !name || cravings.length === 0) {
+        alert("Please fill in all required fields");
+        return;
+      }
+    }
     if (!isLocated) {
       getLatLongFromAddress(address);
     }
@@ -161,6 +172,7 @@ const GroupForm = (props) => {
           navigate(`/group/${groupId}`);
         }
       } else {
+        navigate(`/group/error`);
         throw new Error("Could not join group");
       }
     }
@@ -190,6 +202,7 @@ const GroupForm = (props) => {
                   className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   placeholder="Group Name"
+                  required
                 />
               </label>
             ) : (
@@ -209,6 +222,7 @@ const GroupForm = (props) => {
                   className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   placeholder="Group ID"
+                  required
                 />
               </label>
             )}
@@ -231,6 +245,7 @@ const GroupForm = (props) => {
                 className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                 type="text"
                 placeholder="Name"
+                required
               />
             </label>
           </div>
@@ -254,6 +269,7 @@ const GroupForm = (props) => {
                   className="appearance-none block w-full bg-white text-black border border-green rounded py-3 mb-12 px-4 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   placeholder="Address"
+                  required
                 />
               ) : (
                 <>
@@ -267,6 +283,7 @@ const GroupForm = (props) => {
                     className="appearance-none block w-full bg-white text-black border border-green rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                     type="text"
                     placeholder="Address"
+                    required
                   />{" "}
                   <button
                     type="button"
@@ -296,7 +313,6 @@ const GroupForm = (props) => {
                   </span>
                 );
               })}{" "}
-              {cravingsData[checkedCravings]} <br></br>{" "}
             </label>
             {address.length >= 5 || isLocated === true ? (
               <button
@@ -324,7 +340,7 @@ const GroupForm = (props) => {
                   Select Cravings
                 </button>
                 <div className="hidden textBubble bg-dark-pink text-white py-2 px-2 rounded-full text-xs">
-                  Please enter your address
+                  Please enter your address.
                 </div>
               </div>
             )}
@@ -332,6 +348,22 @@ const GroupForm = (props) => {
           </div>
         </div>
         <div className="flex justify-center">
+          {/* {cravings.length === 0 ? (
+            <div className="submitButton flex flex-col justify-center">
+              <button
+                disabled
+                type="button"
+                className="shadow bg-grey focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                data-bs-toggle="tooltip"
+                title="Disabled tooltip"
+              >
+                {isNewGroup ? "Create" : "Join"}
+              </button>
+              <div className="hidden textBubble bg-dark-pink text-white py-2 px-2 rounded-full text-xs">
+                Please enter your cravings.
+              </div>
+            </div>
+          ) : ( */}
           <button
             type="submit"
             className="shadow bg-pink hover:bg-dark-pink focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
@@ -339,6 +371,7 @@ const GroupForm = (props) => {
           >
             {isNewGroup ? "Create" : "Join"}
           </button>
+          {/* )} */}
         </div>
       </form>
     </div>

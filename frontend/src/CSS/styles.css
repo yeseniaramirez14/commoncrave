@@ -5,3 +5,6 @@
 .cravingsButton:hover .hidden {
     display: block;
   }
+.submitButton:hover .hidden {
+    display: block;
+  }
