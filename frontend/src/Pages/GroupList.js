@@ -154,17 +154,17 @@ const GroupList = () => {
           <>
             <div className="min-h-screen flex flex-col items-center font-worksans bg-yellow">
               {isNewGroup ? (
-                <div className="text-2xl text-green mt-5 h-10 flex flex-row items-center">
+                <div className="text-2xl text-green mt-5 h-10 flex flex-row items-center text-center">
                   {" "}
                   You have successfully created a new group!
                 </div>
               ) : (
-                <div className="text-2xl text-green mt-5 h-10 flex flex-row items-center">
+                <div className="text-2xl text-green mt-5 h-10 flex flex-row items-center text-center">
                   You have successfully joined group {id}
                 </div>
               )}
               <div className="flex flex-col items-center justify-center mt-5">
-                <h1 className="text-3xl font-bold">
+                <h1 className="text-3xl font-bold text-center">
                   Add friends to your group!
                 </h1>
                 <div className="flex flex-row border border-green rounded-lg mt-5">

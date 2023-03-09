@@ -72,7 +72,7 @@ const GroupResult = () => {
           The Common Crave
           {finalGroup.final_cravings.length === 1 ? ` is...` : "s are "}
         </div>
-        <div className="mb-5 grid grid-cols-3 place-items-center text-4xl font-bold">
+        <div className="mb-5 grid grid-cols-3 place-items-center text-3xl font-bold">
           {finalGroup.final_cravings.length === 1
             ? `${finalGroup.final_cravings[0]}`
             : finalGroup.final_cravings.map((craving, index) => {
@@ -97,6 +97,8 @@ const GroupResult = () => {
               "coordinates"
             ]["longitude"]
           }
+          width={window.innerWidth}
+          height={window.innerHeight}
         />
         <div className="mt-5 h-5 text-green flex flex-row items-center text-3xl font-semibold">
           We recommend to visit:
